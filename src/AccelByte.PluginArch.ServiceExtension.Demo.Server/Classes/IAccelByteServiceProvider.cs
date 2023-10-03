@@ -3,7 +3,9 @@
 // and restrictions contact your company contract manager.
 
 using System;
+using System.Collections.Generic;
 using AccelByte.Sdk.Core;
+using AccelByte.Sdk.Feature.LocalTokenValidation;
 
 namespace AccelByte.PluginArch.ServiceExtension.Demo.Server
 {
@@ -12,5 +14,7 @@ namespace AccelByte.PluginArch.ServiceExtension.Demo.Server
         AccelByteSDK Sdk { get; }
 
         AppSettingConfigRepository Config { get; }
+
+        bool ValidatePermission(AccessTokenPayload payload, string permission, int action);
     }
 }

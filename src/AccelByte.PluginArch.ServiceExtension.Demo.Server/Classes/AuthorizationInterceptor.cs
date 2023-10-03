@@ -9,6 +9,11 @@ using Microsoft.Extensions.Logging;
 
 using Grpc.Core;
 using Grpc.Core.Interceptors;
+using Google.Protobuf.Reflection;
+
+using AccelByte.Sdk.Core;
+using AccelByte.Sdk.Feature.LocalTokenValidation;
+using AccelByte.Custom.Guild;
 
 namespace AccelByte.PluginArch.ServiceExtension.Demo.Server
 {
@@ -18,21 +23,37 @@ namespace AccelByte.PluginArch.ServiceExtension.Demo.Server
 
         private readonly IAccelByteServiceProvider _ABProvider;
 
-        private readonly string _Namespace;
-
-        private readonly string _ResourceName;
-
         public AuthorizationInterceptor(ILogger<AuthorizationInterceptor> logger, IAccelByteServiceProvider abSdkProvider)
         {
             _Logger = logger;
             _ABProvider = abSdkProvider;
-            _Namespace = abSdkProvider.Config.Namespace;
-            _ResourceName = abSdkProvider.Config.ResourceName;
         }
 
         public override async Task<TResponse> UnaryServerHandler<TRequest, TResponse>(TRequest request, ServerCallContext context, UnaryServerMethod<TRequest, TResponse> continuation)
         {
-            string qPermission = $"NAMESPACE:{_Namespace}:{_ResourceName}";
+            string methodName = context.Method.Replace('/', '.').Substring(1);
+            MethodDescriptor? methodDesc = null;
+            foreach (var mdItem in GuildService.Descriptor.Methods)
+            {
+                if (mdItem.FullName == methodName)
+                {
+                    methodDesc = mdItem;
+                    break;
+                }
+            }
+
+            if (methodDesc == null)
+                throw new RpcException(new Status(StatusCode.NotFound, "Suitable method not found."));
+
+            MethodOptions mOpts = methodDesc.GetOptions();
+
+            string qPermission = "";
+            if (mOpts.HasExtension(PermissionExtensions.Resource))
+                qPermission = mOpts.GetExtension(PermissionExtensions.Resource);
+
+            Custom.Guild.Action qAction = 0;
+            if (mOpts.HasExtension(PermissionExtensions.Action))
+                qAction = mOpts.GetExtension(PermissionExtensions.Action);
 
             try
             {
@@ -44,9 +65,14 @@ namespace AccelByte.PluginArch.ServiceExtension.Demo.Server
                 if (authParts.Length != 2)
                     throw new RpcException(new Status(StatusCode.InvalidArgument, "Invalid authorization token format"));
 
-                bool b = _ABProvider.Sdk.ValidateToken(authParts[1], qPermission, 2);
+                AccessTokenPayload? tokenPayload = _ABProvider.Sdk.ParseAccessToken(authParts[1], true);
+                if (tokenPayload == null)
+                    throw new RpcException(new Status(StatusCode.Unauthenticated, "Invalid authorization token."));
+                
+                int actNum = (int)qAction;
+                bool b = _ABProvider.ValidatePermission(tokenPayload, qPermission, actNum);
                 if (!b)
-                    throw new Exception("validation failed");
+                    throw new RpcException(new Status(StatusCode.PermissionDenied, $"Permission {qPermission} [{qAction}] is required."));
 
                 return await continuation(request, context);
             }
