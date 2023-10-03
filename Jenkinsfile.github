@@ -1,0 +1,46 @@
+githubOwner = 'AccelByte'
+githubRepo = 'extend-service-extension-csharp'
+githubSsh = 'accelbyte-sdk-sdkbuild-ssh'
+
+githubUrl = "git@github.com:${githubOwner}/${githubRepo}.git"
+
+pipeline {
+  agent {
+    label "master"
+  }
+  stages {
+    stage('Prepare') {
+      steps {
+        script {
+          currentBuild.displayName = "#${env.BUILD_NUMBER}"
+          gitHost = sh(script: "echo '${githubUrl}' | grep -oP '(?<=@).+(?=:)'", returnStdout: true).trim()
+          sh "grep -q ${gitHost} ~/.ssh/known_hosts || ssh-keyscan ${gitHost} | tee -a ~/.ssh/known_hosts"
+        }
+      }
+    }
+    stage('Push') {
+      steps {
+        script {
+          sh "git checkout master"
+          sshagent(credentials: [githubSsh])
+          {
+            sh "git push ${githubUrl} HEAD:main"
+          }
+        }
+      }
+    }
+  }
+  post {
+    failure {
+      script {
+        message = """
+            :no_entry: <${env.BUILD_URL}|${env.JOB_NAME}-${env.BUILD_NUMBER}> *failed*
+            
+            |*Action*: Nightly github sync
+            
+            |""".stripMargin()
+        slackSend(channel: "#activity-extend-engineering", color: '#FF0000', message: message)
+      }
+    }
+  }
+}

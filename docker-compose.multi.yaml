@@ -1,0 +1,44 @@
+version: '3.5'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.service
+    ports:
+      - 6565:6565
+      - 8080:8080
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - OTEL_EXPORTER_ZIPKIN_ENDPOINT=http://host.docker.internal:9411/api/v2/spans # Zipkin
+      - ASPNETCORE_SERILOG_LOKI=http://host.docker.internal:3100
+      - AB_BASE_URL
+      - AB_CLIENT_ID
+      - AB_CLIENT_SECRET
+      - AB_NAMESPACE
+      - PLUGIN_GRPC_SERVER_AUTH_ENABLED
+#    logging:
+#      driver: loki
+#      options:
+#        loki-url: http://localhost:3100/loki/api/v1/push
+#        mode: non-blocking
+#        max-buffer-size: 4m
+#        loki-retries: "3"
+    extra_hosts:
+      - host.docker.internal:host-gateway
+  
+  gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile.gateway
+    ports:
+      - 8000:8000
+#    logging:
+#      driver: loki
+#      options:
+#        loki-url: http://localhost:3100/loki/api/v1/push
+#        mode: non-blocking
+#        max-buffer-size: 4m
+#        loki-retries: "3"
+    command: --grpc-addr=app:6565
+    extra_hosts:
+      - host.docker.internal:host-gateway

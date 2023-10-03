@@ -1,0 +1,102 @@
+// Copyright (c) 2023 AccelByte Inc. All Rights Reserved.
+// This is licensed software from AccelByte Inc, for limitations
+// and restrictions contact your company contract manager.
+
+syntax = "proto3";
+
+option csharp_namespace = "AccelByte.Custom.Guild";
+option go_package = "accelbyte.net/custom/guild";
+option java_multiple_files = true;
+option java_package = "net.accelbyte.custom.guild";
+
+package accelbyte.custom.guild;
+
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+import "permission.proto";
+
+service GuildService {
+
+  rpc CreateOrUpdateGuildProgress (CreateOrUpdateGuildProgressRequest) returns (CreateOrUpdateGuildProgressResponse) {
+    option (permission.action) = CREATE;
+    option (permission.resource) = "ADMIN:NAMESPACE:{namespace}:CLOUDSAVE:RECORD";
+    option (google.api.http) = {
+      post: "/v1/admin/namespace/{namespace}/progress"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Update Guild progression"
+      description: "Update Guild progression if not existed yet will create a new one"
+      security: {
+        security_requirement: {
+          key: "Bearer"
+          value: {}
+        }
+      }
+    };
+  }
+
+  rpc GetGuildProgress (GetGuildProgressRequest) returns (GetGuildProgressResponse) {
+    option (permission.action) = READ;
+    option (permission.resource) = "ADMIN:NAMESPACE:{namespace}:CLOUDSAVE:RECORD";
+    option (google.api.http) = {
+      get: "/v1/admin/namespace/{namespace}/progress/{guild_id}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Get guild progression"
+      description: "Get guild progression"
+      security: {
+        security_requirement: {
+          key: "Bearer"
+          value: {}
+        }
+      }
+    };
+  }
+}
+
+message CreateOrUpdateGuildProgressRequest {
+  string namespace = 1;
+  GuildProgress guild_progress = 2;
+}
+
+message CreateOrUpdateGuildProgressResponse {
+  GuildProgress guild_progress = 1;
+}
+
+message GetGuildProgressRequest {
+  string namespace = 1;
+  string guild_id = 2;
+}
+
+message GetGuildProgressResponse {
+  GuildProgress guild_progress = 1;
+}
+
+message GuildProgress {
+  string guild_id = 1;
+  string namespace = 2;
+  map<string, int32> objectives = 3;
+}
+
+// OpenAPI options for the entire API.
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+    title: "Guild Service API";
+    version: "1.0";
+  };
+  schemes: HTTP;
+  schemes: HTTPS;
+  base_path: "/guild";
+
+  security_definitions: {
+    security: {
+      key: "Bearer";
+      value: {
+        type: TYPE_API_KEY;
+        in: IN_HEADER;
+        name: "Authorization";
+      }
+    }
+  };
+};

@@ -1,0 +1,22 @@
+syntax = "proto3";
+package permission;
+
+import "google/protobuf/descriptor.proto";
+
+option csharp_namespace = "AccelByte.Custom.Guild";
+option go_package = "accelbyte.net/custom/guild";
+option java_multiple_files = true;
+option java_package = "net.accelbyte.custom.guild";
+
+enum Action {
+  unknown = 0; // don't use this
+  CREATE = 1;
+  READ = 2;
+  UPDATE = 4;
+  DELETE = 8;
+}
+
+extend google.protobuf.MethodOptions {
+  string resource = 50001;
+  Action action = 50002;
+}
