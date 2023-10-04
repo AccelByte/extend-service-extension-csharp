@@ -29,8 +29,8 @@ gen-gateway:
 
 build:
 	docker run --rm -u $$(id -u):$$(id -g) \
-		-v $$(pwd):/data/ \
-		-w /data/src \
+		-v $$(pwd)/src:/data/ \
+		-w /data/ \
 		-e HOME="/data" \
 		-e DOTNET_CLI_HOME="/data" \
 		mcr.microsoft.com/dotnet/sdk:$(DOTNETVER) \
