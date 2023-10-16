@@ -51,7 +51,7 @@ namespace AccelByte.PluginArch.ServiceExtension.Demo.Server
 
             string? appResourceName = Environment.GetEnvironmentVariable("APP_RESOURCE_NAME");
             if (appResourceName == null)
-                appResourceName = "SVCEXTDEMOGRPCSERVICE ";
+                appResourceName = "ExtendServiceExtensionGrpcServer";
 
             bool enableAuthorization = builder.Configuration.GetValue<bool>("EnableAuthorization");
             string? strEnableAuth = Environment.GetEnvironmentVariable("PLUGIN_GRPC_SERVER_AUTH_ENABLED");

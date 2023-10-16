@@ -52,7 +52,7 @@ namespace AccelByte.PluginArch.ServiceExtension.Demo.Server
 
             string? appResourceName = Environment.GetEnvironmentVariable("APP_RESOURCE_NAME");
             if (appResourceName == null)
-                appResourceName = "SVCEXTDEMOGRPCSERVICE";
+                appResourceName = "ExtendServiceExtensionGrpcServer";
             ResourceName = appResourceName;
         }
     }
