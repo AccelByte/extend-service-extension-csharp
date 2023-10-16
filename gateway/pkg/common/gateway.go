@@ -8,12 +8,11 @@ import (
 	"context"
 	"net/http"
 
-	"google.golang.org/grpc/credentials/insecure"
+	"google.golang.org/grpc"
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
 
 	pb "extend-grpc-gateway/pkg/pb"
-
-	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
-	"google.golang.org/grpc"
 )
 
 type Gateway struct {
@@ -22,9 +21,13 @@ type Gateway struct {
 
 func NewGateway(ctx context.Context, grpcServerEndpoint string) (*Gateway, error) {
 	mux := runtime.NewServeMux()
-	opts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
-	err := pb.RegisterGuildServiceHandlerFromEndpoint(ctx, mux, grpcServerEndpoint, opts)
+	
+	conn, err := grpc.DialContext(ctx, grpcServerEndpoint, grpc.WithInsecure(), grpc.WithUnaryInterceptor(otelgrpc.UnaryClientInterceptor()))
 	if err != nil {
+		return nil, err
+	}
+
+	if err := pb.RegisterGuildServiceHandler(ctx, mux, conn); err != nil {
 		return nil, err
 	}
 

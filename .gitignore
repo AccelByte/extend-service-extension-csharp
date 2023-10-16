@@ -422,3 +422,5 @@ Thumbs.db
 
 # Local Env File
 .env
+
+gateway/.cache

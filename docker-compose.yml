@@ -17,12 +17,12 @@ services:
       - AB_CLIENT_SECRET
       - AB_NAMESPACE
       - PLUGIN_GRPC_SERVER_AUTH_ENABLED
-#    logging:
-#      driver: loki
-#      options:
-#        loki-url: http://localhost:3100/loki/api/v1/push
-#        mode: non-blocking
-#        max-buffer-size: 4m
-#        loki-retries: "3"
+    logging:
+      driver: loki
+      options:
+        loki-url: http://localhost:3100/loki/api/v1/push
+        mode: non-blocking
+        max-buffer-size: 4m
+        loki-retries: "3"
     extra_hosts:
       - host.docker.internal:host-gateway

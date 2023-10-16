@@ -8,6 +8,7 @@ import (
 	"os/signal"
 	"net/http"
 	"path/filepath"
+	"time"
 	_ "net/http/pprof"
 	common "extend-grpc-gateway/pkg/common"
 
@@ -19,8 +20,11 @@ import (
 )
 
 var (
-	grpcAddr = flag.String("grpc-addr", "localhost:6565", "listen grpc address")
-	gatewayHttpPort = flag.Int("http-port", 8000, "listen http port")
+	environment         = "production"
+	id                  = int64(1)
+	grpcAddr			= flag.String("grpc-addr", "localhost:6565", "listen grpc address")
+	gatewayHttpPort		= flag.Int("http-port", 8000, "listen http port")
+	serviceName         = common.GetEnv("OTEL_SERVICE_NAME", "ExtendCustomServiceGrpcGateway")
 )
 
 func newGRPCGatewayHTTPServer(
@@ -36,11 +40,26 @@ func newGRPCGatewayHTTPServer(
 	serveSwaggerUI(mux)
 	serveSwaggerJSON(mux, swaggerDir)
 
+	loggedMux := loggingMiddleware(logger, mux)
+
 	return &http.Server{
 		Addr:     addr,
-		Handler:  mux,
+		Handler:  loggedMux,
 		ErrorLog: log.New(os.Stderr, "httpSrv: ", log.LstdFlags), // Configure the logger for the HTTP server
 	}
+}
+
+func loggingMiddleware(logger *logrus.Logger, next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		start := time.Now()
+		next.ServeHTTP(w, r)
+		duration := time.Since(start)
+		logger.WithFields(logrus.Fields{
+			"method":   r.Method,
+			"path":     r.URL.Path,
+			"duration": duration,
+		}).Info("HTTP request")
+	})
 }
 
 func serveSwaggerUI(mux *http.ServeMux) {
@@ -68,13 +87,16 @@ func serveSwaggerJSON(mux *http.ServeMux, swaggerDir string) {
 
 func main() {
 	flag.Parse()
-	defer glog.Flush()
+	defer glog.Flush()	
 	
 	logrus.Infof("starting gateway server..")
 
 	ctx := context.Background()
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
+
+	stopTracing := common.InitTracing(ctx, serviceName, environment, id)
+	defer stopTracing()
 
 	// Create a new HTTP server for the gRPC-Gateway
 	grpcGateway, err := common.NewGateway(ctx, *grpcAddr)
@@ -92,7 +114,7 @@ func main() {
 		}
 	}()
 
-	logrus.Infof("grpc server started")
+	logrus.Infof("grpc server started")	
 
 	ctx, _ = signal.NotifyContext(ctx, os.Interrupt)
 	<-ctx.Done()

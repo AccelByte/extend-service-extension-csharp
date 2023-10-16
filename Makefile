@@ -27,6 +27,12 @@ gen-gateway:
 			--openapiv2_opt use_go_templates=true \
 			--go-grpc_opt=paths=source_relative /source/AccelByte.PluginArch.ServiceExtension.Demo.Server/Protos/*.proto
 
+mod-gateway:
+	docker run -t --rm -u $$(id -u):$$(id -g) \
+		-v $$(pwd)/gateway:/data \
+		-w /data/ golang:1.20 \
+		go mod tidy
+
 build:
 	docker run --rm -u $$(id -u):$$(id -g) \
 		-v $$(pwd)/src:/data/ \
