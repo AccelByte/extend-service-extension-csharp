@@ -1,3 +1,5 @@
+> :warning: This sample app is still **under development**.
+
 # extend-service-extension-csharp
 
 ## Overview
