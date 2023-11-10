@@ -27,7 +27,7 @@ ARG GATEWAY_PATH=gateway
 ARG SWAGGER_JSON=guildService.swagger.json
 
 RUN apt-get update && \
-    apt-get install -y supervisor --no-install-recommends && \
+    apt-get install -y supervisor procps --no-install-recommends && \
     rm -rf /var/lib/apt/lists/*
 COPY supervisord.conf /etc/supervisor/supervisord.conf
 
