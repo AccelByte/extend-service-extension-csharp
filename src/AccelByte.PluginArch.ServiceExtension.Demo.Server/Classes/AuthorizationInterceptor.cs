@@ -65,12 +65,8 @@ namespace AccelByte.PluginArch.ServiceExtension.Demo.Server
                 if (authParts.Length != 2)
                     throw new RpcException(new Status(StatusCode.InvalidArgument, "Invalid authorization token format"));
 
-                AccessTokenPayload? tokenPayload = _ABProvider.Sdk.ParseAccessToken(authParts[1], true);
-                if (tokenPayload == null)
-                    throw new RpcException(new Status(StatusCode.Unauthenticated, "Invalid authorization token."));
-                
                 int actNum = (int)qAction;
-                bool b = _ABProvider.ValidatePermission(tokenPayload, qPermission, actNum);
+                bool b = _ABProvider.Sdk.ValidateToken(authParts[1], qPermission, actNum);
                 if (!b)
                     throw new RpcException(new Status(StatusCode.PermissionDenied, $"Permission {qPermission} [{qAction}] is required."));
 

@@ -14,7 +14,5 @@ namespace AccelByte.PluginArch.ServiceExtension.Demo.Server
         AccelByteSDK Sdk { get; }
 
         AppSettingConfigRepository Config { get; }
-
-        bool ValidatePermission(AccessTokenPayload payload, string permission, int action);
     }
 }
