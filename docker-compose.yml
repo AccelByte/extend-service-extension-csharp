@@ -1,9 +1,8 @@
 version: '3.5'
+
 services:
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    build: .
     ports:
       - 6565:6565
       - 8080:8080
@@ -17,6 +16,8 @@ services:
       - AB_CLIENT_SECRET
       - AB_NAMESPACE
       - PLUGIN_GRPC_SERVER_AUTH_ENABLED
+    extra_hosts:
+      - host.docker.internal:host-gateway
     logging:
       driver: loki
       options:
@@ -24,5 +25,3 @@ services:
         mode: non-blocking
         max-buffer-size: 4m
         loki-retries: "3"
-    extra_hosts:
-      - host.docker.internal:host-gateway
