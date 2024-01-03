@@ -1,21 +1,33 @@
-> :warning: This sample app is still **under development**.
-
 # extend-service-extension-csharp
+
+```mermaid
+flowchart LR
+   CL[Game Client]
+   subgraph "Extend Service Extension App (you are here)"
+   GW["gRPC Gateway"]
+   SV["gRPC Server"]
+   end
+   CL --- GW
+   GW --- SV
+```
+
+`AccelByte Gaming Services` features can be extended by using 
+`Extend Service Extension` apps. An `Extend Service Extension` app is essentially a 
+custom REST API service. It is implemented using a combination of [gRPC Gateway and gRPC Server](https://github.com/grpc-ecosystem/grpc-gateway?tab=readme-ov-file#about).
 
 ## Overview
 
-This repository contains a `sample service extension app` written in `C#`.
-It provides a simple custom guild service that has 2 (two) endpoints to create and get guild progress data.
-This sample app provides a grpc server in .NET and a [grpc-gateway](https://github.com/grpc-ecosystem/grpc-gateway) implementation for the grpc server in GoLang.
+This repository contains a sample `Extend Service Extension` app written in 
+`C#`. It provides a simple custom guild service that has two endpoints to 
+create and get guild progress data.
 
-This sample app also shows how this `gRPC server` can be instrumented for better observability.
-It is configured by default to send metrics, traces, and logs to the observability `dependency services` 
-in [grpc-plugin-dependencies](https://github.com/AccelByte/grpc-plugin-dependencies).
-
-> :warning: **grpc-plugin-dependencies is provided as example for local development purpose only:** The dependency services in the actual gRPC server deployment may not be exactly the same.
+This sample app also shows the instrumentation setup necessary for 
+observability. It is required so that metrics, traces, and logs are able to 
+flow properly when the app is deployed.
 
 
 ## Prerequisites
+
 
 1. Windows 10 WSL2 or Linux Ubuntu 20.04 with the following tools installed.
 
@@ -25,41 +37,28 @@ in [grpc-plugin-dependencies](https://github.com/AccelByte/grpc-plugin-dependenc
 
    c. docker v23.x
 
-   d. docker-compose v2
+   d. .net 6 sdk
 
-   e. .net 6 sdk
+   e. go v1.20 (optional, the generate `grpc-gateway` step in the Makefile uses a docker image to compile)
 
-   f. docker loki driver (required for docker log with loki)
-    
-      ```
-      docker plugin install grafana/loki-docker-driver:latest --alias loki --grant-all-permissions
-      ```
-   g. go v1.20 (optional, generate grpc-gateway action in Makefile use docker image to compile go)
+   f. [grpcui](https://github.com/fullstorydev/grpcui)
 
-   h. [ngrok](https://ngrok.com/)
+2. Access to `AccelByte Gaming Services` environment.
 
-   i. [postman](https://www.postman.com/)
+   a. Base URL:
 
-   j. [grpcurl](https://github.com/fullstorydev/grpcurl)
+      - For `Starter` tier e.g.  https://spaceshooter.dev.gamingservices.accelbyte.io
+      - For `Premium` tier e.g.  https://dev.accelbyte.io
 
-3. Access to `AccelByte Gaming Services` demo environment.
+   b. [Create a Game Namespace](https://docs.accelbyte.io/gaming-services/getting-started/how-to/create-a-game-namespace/) if you don't have one yet. Keep the `Namespace ID`.
 
-   a. Base URL: https://demo.accelbyte.io.
-   
-   b. [Create a Game Namespace](https://docs.accelbyte.io/esg/uam/namespaces.html#tutorials) 
-      if you don't have one yet. Keep the `Namespace ID`.
-   
-   c. [Create an OAuth Client](https://docs.accelbyte.io/guides/access/iam-client.html) with `confidential` client type. Keep the `Client ID` and `Client Secret`.
-      ```
-      ADMIN:ROLE [READ]
-      ADMIN:NAMESPACE:{namespace}:CLOUDSAVE:RECORD [CREATE,READ,UPDATE,DELETE]
-      ```
 
-4. [Extend Helper CLI](https://github.com/AccelByte/extend-helper-cli) to upload the app to AGS. Note that to use the tool you'll need an AGS account, be sure to follow the docs on the github link above.
+   c. [Create an OAuth Client](https://docs.accelbyte.io/gaming-services/services/access/authorization/manage-access-control-for-applications/#create-an-iam-client) with confidential client type with the following permissions. Keep the `Client ID` and `Client Secret`.
+
+      - `ADMIN:ROLE [READ]` (required to be able to validate access token and permissions)
+      - `ADMIN:NAMESPACE:{namespace}:CLOUDSAVE:RECORD [CREATE, READ, UPDATE, DELETE]` (required to be able to create, read, update, and delete cloudsave records)
 
 ## Setup
-
-To be able to run this sample app, you will need to follow these setup steps.
 
 1. Create a docker compose `.env` file by copying the content of [.env.template](.env.template) file.
 
@@ -75,7 +74,7 @@ To be able to run this sample app, you will need to follow these setup steps.
    AB_NAMESPACE='xxxxxxxxxx'                 # Namespace ID from the Prerequisites section
    PLUGIN_GRPC_SERVER_AUTH_ENABLED=true     # Enable or disable access token and permission verification
    ```
-     > :info: **PLUGIN_GRPC_SERVER_AUTH_ENABLED**: If 'disable' will bypass the validation being set on the endpoint `permission.action` and `permission.resource` [creating-new-endpoint](6-creating-new-endpoint.md#6-creating-a-new-endpoint)
+   > :info: **PLUGIN_GRPC_SERVER_AUTH_ENABLED**: If 'disable' will bypass the validation being set on the endpoint `permission.action` and `permission.resource` [creating-new-endpoint](6-creating-new-endpoint.md#6-creating-a-new-endpoint)
 
    For more options, create `src/AccelByte.PluginArch.ServiceExtension.Demo.Server/appsettings.Development.json` and fill in the required configuration.   
    ```json
@@ -87,21 +86,17 @@ To be able to run this sample app, you will need to follow these setup steps.
       "BaseUrl": "https://demo.accelbyte.io",     // Base URL (env var: AB_BASE_URL)
       "ClientId": "xxxxxxxxxx",                   // Client ID (env var: AB_CLIENT_ID)    
       "ClientSecret": "xxxxxxxxxx",               // Client Secret (env var: AB_CLIENT_SECRET)
-      "AppName": "EVENTHANDLERDEMOGRPCSERVICE",
+      "AppName": "EXTENDSERVICEEXTENSIONSERVICE",
       "TraceIdVersion": "1",
       "Namespace": "xxxxxxxxxx",                  // Namespace ID (env var: AB_NAMESPACE)
       "EnableTraceId": true,
       "EnableUserAgentInfo": true,
-      "ResourceName": "EVENTHANDLERDEMOGRPCSERVICE",
+      "ResourceName": "EXTENDSERVICEEXTENSIONSERVICE",
       "ItemIdToGrant": "xxxxxxxxxxxx"             // ItemId to grant (env var: ITEM_ID_TO_GRANT)
    }
    }
    ```
    > :warning: **Environment variable values will override related configuration values in this file**.
-
-3. Ensure you have configured all required permission for your clientId, in this custom service we're using:
-   - `ADMIN:ROLE [READ]` -> This is required, since we define our permission as `ADMIN:` in the guildService.proto
-   - `ADMIN:NAMESPACE:{namespace}:CLOUDSAVE:RECORD [CREATE,READ,UPDATE,DELETE]` -> This is required since we access cloudsave game record endpoint
 
 ## Building
 
@@ -116,7 +111,7 @@ $ make build
 To (build and) run this sample app in a container, use the following command.
 
 ```shell
-$ docker-compose up --build
+$ docker compose up --build
 ```
 
 ## Testing
@@ -136,26 +131,26 @@ then run this command.
 $ make test
 ```
 
-### Functional Test in Local Development Environment
+### Test in Local Development Environment
 
 The custom function in this sample app can be tested locally using [grpcui](https://github.com/fullstorydev/grpcui).
 
-1. [Optional] Run the `dependency services` by following the `README.md` in the [grpc-plugin-dependencies](https://github.com/AccelByte/grpc-plugin-dependencies) repository.
-   > :warning: **Make sure to start dependency services with mTLS disabled for now**: It is currently not supported by `AccelByte Gaming Services`, but it will be enabled later on to improve security. If it is enabled, the gRPC client calls without mTLS will be rejected.
+1. Run this `Extend Service Extension` sample app by using the command below.
 
-2. Run this `extend-service-extension-csharp` sample app.
-   > :warning: If you skip grpc-plugin-dependencies, make sure to comment all lines related to logging to loki
+   ```shell
+   docker compose up --build
+   ```
 
-3. Install `grpcui`, please refer to the official doc on the installation, and then run this command
+2. Run `grpcui` with the following command.
 
    ```shell
    grpcui -plaintext localhost:6565
    ```
 
-   with `localhost:6565` is the address for our `extend-service-extension-go`, now go to the Web UI with 
-   the URL generated by `grpcui`
+   > :warning: **If you are running [grpc-plugin-dependencies](https://github.com/AccelByte/grpc-plugin-dependencies) stack alongside this sample app as mentioned in [Test Observability](#test-observability)**: Use `localhost:10000` instead of `localhost:6565`. This way, the `gRPC server` will be called via `Envoy` service within `grpc-plugin-dependencies` stack instead of directly.
 
-4. Now in `grpcui` send request for create or update guild progress with this sample payload
+3. Open the URL given by `grpcui` and send a request for create or update guild progress with the following sample payload.
+
    ```json
    {
       "guildProgress": {
@@ -169,36 +164,70 @@ The custom function in this sample app can be tested locally using [grpcui](http
       }
    }
    ```
-   `guildId` is optional, if you don't specify one, then the service will create one for you.
-   Also you can change the field value you're interested to suits your need, e.g. `namespace` , `objectives`, etc
 
-   Then, you can use `grpcui` this way, and please ensure you're selecting the service name and method name you're interested in. Then hit `Invoke` to send the request.
-   
+   > :exclamation: The `guildId` field is optional. If you do not specify one, the service will create one for you. You may also change other field values according to your needs 
+   e.g. `namespace`, `objectives`, etc.
+
+   Finally, make sure to select the right service name and method name
+   and click `Invoke` to send the request.
+
    ![grpcui request](./docs/images/grpcui-request.png)
 
-5. To test using grpc-gateway, open browser and go to `http://localhost:8000/guild/apidocs/`. You can use this swagger ui to perform api request.
+4. After the `gRPC Server` is confirmed working, the REST API service can be tested by opening Swagger UI at `http://localhost:8000/guild/apidocs/`. Use this to create an API request for testing.
 
    ![swagger-inteface](./docs/images/swagger-interface.png)
 
-### Integration Test with AccelByte Gaming Services
+### Test Observability
 
-After passing functional test in local development environment, you may want to perform
-integration test with `AccelByte Gaming Services`. Here, we are going to deploy our sample app to AGS.
+To be able to see the how the observability works in this sample app locally, there are few things that need be setup before performing tests.
 
-1. Download and setup [extend-helper-cli](https://github.com/AccelByte/extend-helper-cli/)
+1. Uncomment loki logging driver in [docker-compose.yaml](docker-compose.yaml)
 
-2. Create service extension app, please refer to the docs in [here](https://docs.accelbyte.io/gaming-services/services/extend/)
+   ```
+    # logging:
+    #   driver: loki
+    #   options:
+    #     loki-url: http://host.docker.internal:3100/loki/api/v1/push
+    #     mode: non-blocking
+    #     max-buffer-size: 4m
+    #     loki-retries: "3"
+   ```
 
-3. Do a docker login using `extend-helper-cli`, please refer to its documentation
+   > :warning: **Make sure to install docker loki plugin beforehand**: Otherwise,
+   this sample app will not be able to run. This is required so that container logs
+   can flow to the `loki` service within `grpc-plugin-dependencies` stack. 
+   Use this command to install docker loki plugin: `docker plugin install grafana/loki-docker-driver:latest --alias loki --grant-all-permissions`.
 
-4. Upload the image
+2. Clone and run [grpc-plugin-dependencies](https://github.com/AccelByte/grpc-plugin-dependencies) stack alongside this sample app. After this, Grafana 
+will be accessible at http://localhost:3000.
 
-```shell
-$ make imagex_push IMAGE_TAG=v0.0.1 REPO_URL=xxxxxxxxxx.dkr.ecr.us-west-2.amazonaws.com/accelbyte/justice/development/extend/xxxxxxxxxx/xxxxxxxxxx 
-```
+   ```
+   git clone https://github.com/AccelByte/grpc-plugin-dependencies.git
+   cd grpc-plugin-dependencies
+   docker compose up
+   ```
 
-> Note. the REPO_URL is obtained from step 2 in the app detail on the 'Repository Url' field
+   > :exclamation: More information about [grpc-plugin-dependencies](https://github.com/AccelByte/grpc-plugin-dependencies) is available [here](https://github.com/AccelByte/grpc-plugin-dependencies/blob/main/README.md).
 
-## Developing a Custom Service
+3. Perform testing. For example, by following [Test in Local Development Environment](#test-in-local-development-environment).
 
-Read [this](./docs/0-toc.md) for more information on how to develop a custom service using this sample.
+## Deploying
+
+After done testing, you may want to deploy this app to `AccelByte Gaming Services`.
+
+1. [Create a new Extend Service Extension App on Admin Portal](https://docs.accelbyte.io/gaming-services/services/extend/service-extension/getting-started-service-extension/#register-and-integrate-custom-service-to-extend-service-extension). Keep the `Repository Url`.
+2. Download and setup [extend-helper-cli](https://github.com/AccelByte/extend-helper-cli/) (only if it has not been done previously).
+3. Perform docker login using `extend-helper-cli` using the following command.
+   ```
+   extend-helper-cli dockerlogin --namespace my-game --app my-app --login
+   ```
+   > :exclamation: More information about [extend-helper-cli](https://github.com/AccelByte/extend-helper-cli/) is available [here](https://github.com/AccelByte/extend-helper-cli/blob/master/README.md).
+4. Build and push sample app docker image to AccelByte ECR using the following command.
+   ```
+   make imagex_push REPO_URL=xxxxxxxxxx.dkr.ecr.us-west-2.amazonaws.com/accelbyte/justice/development/extend/xxxxxxxxxx/xxxxxxxxxx IMAGE_TAG=v0.0.1
+   ```
+   > :exclamation: **The REPO_URL is obtained from step 1**: It can be found under 'Repository Url' in the app detail.
+
+## Additional
+
+For more details on how to develop a custom service based on this sample app, please refer documentation [here](./docs/0-toc.md).
