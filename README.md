@@ -41,8 +41,6 @@ flow properly when the app is deployed.
 
    e. go v1.20 (optional, the generate `grpc-gateway` step in the Makefile uses a docker image to compile)
 
-   f. [grpcui](https://github.com/fullstorydev/grpcui)
-
 2. Access to `AccelByte Gaming Services` environment.
 
    a. Base URL:
@@ -94,7 +92,6 @@ flow properly when the app is deployed.
       "ResourceName": "EXTENDSERVICEEXTENSIONSERVICE",
       "ItemIdToGrant": "xxxxxxxxxxxx"             // ItemId to grant (env var: ITEM_ID_TO_GRANT)
    }
-   }
    ```
    > :warning: **Environment variable values will override related configuration values in this file**.
 
@@ -133,7 +130,7 @@ $ make test
 
 ### Test in Local Development Environment
 
-The custom function in this sample app can be tested locally using [grpcui](https://github.com/fullstorydev/grpcui).
+The custom function in this sample app can be tested locally using Swagger UI.
 
 1. Run this `Extend Service Extension` sample app by using the command below.
 
@@ -141,41 +138,9 @@ The custom function in this sample app can be tested locally using [grpcui](http
    docker compose up --build
    ```
 
-2. Run `grpcui` with the following command.
+2. After the `gRPC Server` is confirmed working, the REST API service can be tested by opening Swagger UI at `http://localhost:8000/guild/apidocs/`. Use this to create an API request for testing.
 
-   ```shell
-   grpcui -plaintext localhost:6565
-   ```
-
-   > :warning: **If you are running [grpc-plugin-dependencies](https://github.com/AccelByte/grpc-plugin-dependencies) stack alongside this sample app as mentioned in [Test Observability](#test-observability)**: Use `localhost:10000` instead of `localhost:6565`. This way, the `gRPC server` will be called via `Envoy` service within `grpc-plugin-dependencies` stack instead of directly.
-
-3. Open the URL given by `grpcui` and send a request for create or update guild progress with the following sample payload.
-
-   ```json
-   {
-      "guildProgress": {
-         "guildId": "",
-         "namespace": "",
-         "objectives": {
-            "additionalProp1": 0,
-            "additionalProp2": 0,
-            "additionalProp3": 0
-         }
-      }
-   }
-   ```
-
-   > :exclamation: The `guildId` field is optional. If you do not specify one, the service will create one for you. You may also change other field values according to your needs 
-   e.g. `namespace`, `objectives`, etc.
-
-   Finally, make sure to select the right service name and method name
-   and click `Invoke` to send the request.
-
-   ![grpcui request](./docs/images/grpcui-request.png)
-
-4. After the `gRPC Server` is confirmed working, the REST API service can be tested by opening Swagger UI at `http://localhost:8000/guild/apidocs/`. Use this to create an API request for testing.
-
-   ![swagger-inteface](./docs/images/swagger-interface.png)
+   ![swagger-interface](./docs/images/swagger-interface.png)
 
 ### Test Observability
 
