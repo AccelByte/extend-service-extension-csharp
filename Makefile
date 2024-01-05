@@ -66,5 +66,10 @@ imagex_push:
 	docker buildx rm --keep-state $(BUILDER)
 
 test:
-	docker run --rm -u $$(id -u):$$(id -g) -v $$(pwd):/data/ -w /data/src -e HOME="/data" -e DOTNET_CLI_HOME="/data" mcr.microsoft.com/dotnet/sdk:$(DOTNETVER) \
-		dotnet test
+	@test -n "$(ENV_FILE_PATH)" || (echo "ENV_FILE_PATH is not set" ; exit 1)
+	docker run --rm -u $$(id -u):$$(id -g) \
+		-v $$(pwd):/data/ \
+		-e HOME="/data/.testrun" -e DOTNET_CLI_HOME="/data/.testrun" \
+		--env-file $(ENV_FILE_PATH) \
+		mcr.microsoft.com/dotnet/sdk:$(DOTNETVER) \
+		sh -c "mkdir /data/.testrun && cp -r /data/src /data/.testrun/src && cd /data/.testrun/src && dotnet test && rm -rf /data/.testrun"
