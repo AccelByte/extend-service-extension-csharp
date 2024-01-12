@@ -35,12 +35,10 @@ mod-gateway:
 
 build:
 	docker run --rm -u $$(id -u):$$(id -g) \
-		-v $$(pwd)/src:/data/ \
-		-w /data/ \
-		-e HOME="/data" \
-		-e DOTNET_CLI_HOME="/data" \
+		-v $$(pwd):/data/ \
+		-e HOME="/data/.testrun" -e DOTNET_CLI_HOME="/data/.testrun" \
 		mcr.microsoft.com/dotnet/sdk:$(DOTNETVER) \
-			dotnet build
+		sh -c "mkdir /data/.testrun && cp -r /data/src /data/.testrun/src && cd /data/.testrun/src && dotnet build && mkdir /data/.output && cp -r /data/.testrun/src/AccelByte.PluginArch.ServiceExtension.Demo.Server/bin/* /data/.output/ && rm -rf /data/.testrun"
 
 image-service:
 	docker build -f Dockerfile.service -t ${IMAGE_NAME}-service .
