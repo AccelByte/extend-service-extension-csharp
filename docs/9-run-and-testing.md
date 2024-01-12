@@ -24,7 +24,7 @@ To be able to run this sample app, you will need to follow these setup steps.
   > :info: **PLUGIN_GRPC_SERVER_AUTH_ENABLED**: If 'disable' will bypass the validation being set on the endpoint `permission.action` and `permission.resource` [creating-new-endpoint](6-creating-new-endpoint.md#6-creating-a-new-endpoint)
 
 - Ensure you have configured all required permission for your clientId, in this custom service we're using:
-
+  > :exclamation: For AGS Starter customers, you don't need to add the permissions. All confidential IAM clients already contain the necessary permissions.
   - ADMIN:ROLE [READ]
     - It was needed since we define our permission as `ADMIN:` in the guildService.proto
   - ADMIN:NAMESPACE:{namespace}:CLOUDSAVE:RECORD [CREATE,READ,UPDATE,DELETE]
