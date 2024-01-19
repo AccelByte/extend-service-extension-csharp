@@ -14,14 +14,14 @@ To be able to run this sample app, you will need to follow these setup steps.
 - Fill in the required environment variables in `.env` file as shown below.
 
    ```txt
-   AB_BASE_URL=https://demo.accelbyte.io      # Base URL of AccelByte Gaming Services demo environment
-   AB_CLIENT_ID='xxxxxxxxxx'                  # Use Client ID from the Setup section
-   AB_CLIENT_SECRET='xxxxxxxxxx'              # Use Client Secret from the Setup section
-   AB_NAMESPACE='xxxxxxxxxx'                  # Use Namespace ID from the Setup section
-   PLUGIN_GRPC_SERVER_AUTH_ENABLED=true       # Enable or disable access token and permission verification
+   AB_BASE_URL='http://test.accelbyte.io'       # Your environment's domain Base URL
+   AB_CLIENT_ID='xxxxxxxxxx'                    # Use Client ID from the Setup section
+   AB_CLIENT_SECRET='xxxxxxxxxx'                # Use Client Secret from the Setup section
+   AB_NAMESPACE='xxxxxxxxxx'                    # Use Namespace ID from the Setup section
+   PLUGIN_GRPC_SERVER_AUTH_ENABLED=true         # Enable or disable access token and permission verification
    ```
 
-  > :info: **PLUGIN_GRPC_SERVER_AUTH_ENABLED**: If 'disable' will bypass the validation being set on the endpoint `permission.action` and `permission.resource` [creating-new-endpoint](6-creating-new-endpoint.md#6-creating-a-new-endpoint)
+  > :info: **PLUGIN_GRPC_SERVER_AUTH_ENABLED**: If 'false' will bypass the validation being set on the endpoint `permission.action` and `permission.resource` [creating-new-endpoint](6-creating-new-endpoint.md#6-creating-a-new-endpoint)
 
 - Ensure you have configured all required permission for your clientId, in this custom service we're using:
   > :exclamation: For AGS Starter customers, you don't need to add the permissions. All confidential IAM clients already contain the necessary permissions.
