@@ -153,7 +153,7 @@ The custom function in this sample app can be tested locally using Swagger UI.
    ```
 
 3. After the `gRPC Server` is confirmed working, the REST API service can be tested by opening Swagger UI at `http://localhost:8000/guild/apidocs/`. Use this to create an API request for testing.
-   > :info: **PLUGIN_GRPC_SERVER_AUTH_ENABLED**: If 'true', you'll need to authorize Swagger UI using user's access token. You can refer to first step above on how to generate user's access token.
+   > :info: **PLUGIN_GRPC_SERVER_AUTH_ENABLED**: If 'true', you'll need to authorize Swagger UI using user's access token. You can refer to first step above on how to generate user's access token. Make sure the user has a role contains following permission: `ADMIN:NAMESPACE:{namespace}:CLOUDSAVE:RECORD [CREATE, READ, UPDATE, DELETE]`.
 
    ![swagger-interface](./docs/images/swagger-interface.png)
 
