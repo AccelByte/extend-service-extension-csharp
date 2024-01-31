@@ -9,7 +9,7 @@ ensure that everything is working as expected.
 
 To be able to run this sample app, you will need to follow these setup steps.
 
-- Create a docker compose `.env` file by copying the content of [.env.template](.env.template) file.
+- Create a docker compose `.env` file by copying the content of [.env.template](../.env.template) file.
 
 - Fill in the required environment variables in `.env` file as shown below.
 
