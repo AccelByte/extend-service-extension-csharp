@@ -4,4 +4,4 @@
 
 package common
 
-var BasePath = "/guild"
+var BasePath = getBasePath()

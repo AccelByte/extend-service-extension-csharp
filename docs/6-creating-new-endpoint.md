@@ -76,7 +76,6 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
   };
   schemes: HTTP;
   schemes: HTTPS;
-  base_path: "/guild";
 
   security_definitions: {
     security: {
@@ -109,11 +108,9 @@ Permission control via `permission.proto`
 
 After defining the service and methods in the `.proto` file, build the service project using `dotnet build` inside the service project directory. This will re-generate all grpc related models and service class. Then we run the protoc compiler to generate the corresponding grpc-gateway code.
 
-> gRPC Gateway tricky part: `base_path`. If `base_path` is set, note that it doesn't alter the paths generated in the Swagger file. Your actual API paths in `google.api.http` remain unchanged. If you're using `base_path`, you'll need to manually adjust the `BasePath` in the `gateway/pkg/common/config.go`. We will explain more about this in the following chapter.
+## 6.2 Generating gRPC Gateway Go and Java Code
 
-## 6.2 Generating gRPC Gateway Go Code
-
-After updating our .proto file, we need to generate Go code from it.
+After updating our .proto file, we need to generate Go and Java code from it.
 The protobuf compiler `protoc` is used to generate Go code from our .proto file. 
 However, in our setup, we've simplified this with a `Makefile`.
 

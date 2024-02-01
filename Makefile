@@ -30,11 +30,12 @@ gen-gateway:
 
 mod-gateway:
 	docker run -t --rm -u $$(id -u):$$(id -g) \
+		-e GOCACHE=/tmp/cache \
 		-v $$(pwd)/gateway:/data \
 		-w /data/ golang:1.20 \
 		go mod tidy
 
-build:
+build: gen-gateway mod-gateway
 	docker run --rm -u $$(id -u):$$(id -g) \
 		-v $$(pwd):/data/ \
 		-e HOME="/data/.testrun" -e DOTNET_CLI_HOME="/data/.testrun" \

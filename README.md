@@ -72,6 +72,7 @@ flow properly when the app is deployed.
    AB_CLIENT_SECRET='xxxxxxxxxx'             # Client Secret from the Prerequisites section
    AB_NAMESPACE='xxxxxxxxxx'                 # Namespace ID from the Prerequisites section
    PLUGIN_GRPC_SERVER_AUTH_ENABLED=true      # Enable or disable access token and permission validation
+   BASE_PATH='/guild'                        # The base path used for the app
    ```
  
    > :info: **In this sample app, PLUGIN_GRPC_SERVER_AUTH_ENABLED is `true` by default**: If it is set to `false`, the endpoint `permission.action` and `permission.resource`  validation will be disabled and the endpoint can be accessed without a valid access token. This option is provided for development purpose only. For more information, see [creating-new-endpoint](docs/6-creating-new-endpoint.md#6-creating-a-new-endpoint).
@@ -101,7 +102,7 @@ flow properly when the app is deployed.
 To build this sample app, use the following command.
 
 ```shell
-$ make build
+make build
 ```
 
 The build output will be available in `.output` directory.
@@ -111,7 +112,7 @@ The build output will be available in `.output` directory.
 To (build and) run this sample app in a container, use the following command.
 
 ```shell
-$ docker compose up --build
+docker compose up --build
 ```
 
 ## Testing
@@ -128,7 +129,7 @@ AB_NAMESPACE='xxxxxxxxxx'                    # Namespace ID from the Prerequisit
 then run this command.
 
 ```shell
-$ make test ENV_FILE_PATH=<your env var file>
+make test ENV_FILE_PATH=<your env var file>
 ```
 
 ### Test in Local Development Environment
@@ -155,6 +156,8 @@ The custom function in this sample app can be tested locally using Swagger UI.
    ```
 
 3. After the `gRPC Server` is confirmed working, the REST API service can be tested by opening Swagger UI at `http://localhost:8000/guild/apidocs/`. Use this to create an API request for testing.
+   > :info: Depending on the envar you set for `BASE_PATH`, the service will have different service URL. This how it's the formatted `http://localhost:8000/<base_path>`
+
    > :info: **PLUGIN_GRPC_SERVER_AUTH_ENABLED**: If 'true', you'll need to authorize Swagger UI using user's access token. You can refer to first step above on how to generate user's access token. Make sure the user has a role contains following permission: `ADMIN:NAMESPACE:{namespace}:CLOUDSAVE:RECORD [CREATE, READ, UPDATE, DELETE]`.
 
    ![swagger-interface](./docs/images/swagger-interface.png)
@@ -220,3 +223,21 @@ After done testing, you may want to deploy this app to `AccelByte Gaming Service
 ## Additional
 
 For more details on how to develop a custom service based on this sample app, please refer documentation [here](./docs/0-toc.md).
+
+## Changelog & Update Notices
+
+Ensure you're always up-to-date with the latest changes to our application. This section is dedicated to highlighting significant updates, including new features and breaking changes, to advise users on the importance of updating to the latest version.
+
+### v2024.01 - (Release Date: 2024-01-01) [**BREAKING CHANGE**]
+
+**Breaking Change & New Feature: `Dynamic Base Path`**
+
+- We've introduced a **Dynamic Base Path** feature, enabling seamless deployment of the Service Extension into any namespace or environment without requiring image modifications. This significant enhancement offers flexibility and efficiency in how services are deployed.
+- **Impact:** This change modifies the deployment and configuration process of the Service Extension. If your application utilized the Service Extension sample app before **February 26th, 2024**, updating is essential to maintain functionality and leverage this new capability.
+- **Action Required:** Follow the [migration guide](./docs/migration-guide/migration-v2023.12-to-v2024.01.md) for comprehensive instructions on updating your Service Extension app to utilize the dynamic extension path. Updating ensures compatibility and allows you to benefit from enhanced deployment flexibility.
+
+### v2023.12 - (Release Date: 2023-12-11)
+
+**New Features:**
+- Initial release
+---

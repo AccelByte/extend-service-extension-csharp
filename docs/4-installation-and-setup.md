@@ -37,6 +37,6 @@ cd grpc-plugin-dependencies
 and then do this
 
 ```bash
-docker-compose up
+docker compose up
 
 ```
