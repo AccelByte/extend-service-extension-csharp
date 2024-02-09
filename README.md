@@ -71,15 +71,16 @@ flow properly when the app is deployed.
    AB_CLIENT_ID='xxxxxxxxxx'                 # Client ID from the Prerequisites section
    AB_CLIENT_SECRET='xxxxxxxxxx'             # Client Secret from the Prerequisites section
    AB_NAMESPACE='xxxxxxxxxx'                 # Namespace ID from the Prerequisites section
-   PLUGIN_GRPC_SERVER_AUTH_ENABLED=true     # Enable or disable access token and permission verification
+   PLUGIN_GRPC_SERVER_AUTH_ENABLED=true      # Enable or disable access token and permission validation
    ```
-   > :info: **PLUGIN_GRPC_SERVER_AUTH_ENABLED**: If 'false' will bypass the validation being set on the endpoint `permission.action` and `permission.resource` [creating-new-endpoint](6-creating-new-endpoint.md#6-creating-a-new-endpoint)
-
+ 
+   > :info: **In this sample app, PLUGIN_GRPC_SERVER_AUTH_ENABLED is `true` by default**: If it is set to `false`, the endpoint `permission.action` and `permission.resource`  validation will be disabled and the endpoint can be accessed without a valid access token. This option is provided for development purpose only. For more information, see [creating-new-endpoint](docs/6-creating-new-endpoint.md#6-creating-a-new-endpoint).
+   
    For more options, create `src/AccelByte.PluginArch.ServiceExtension.Demo.Server/appsettings.Development.json` and fill in the required configuration.   
    ```json
    {
    "DirectLogToLoki": false,
-   "EnableAuthorization": false,                 // Enable or disable access token and permission check (env var: PLUGIN_GRPC_SERVER_AUTH_ENABLED)
+   "EnableAuthorization": true,                 // Enable or disable access token and permission check (env var: PLUGIN_GRPC_SERVER_AUTH_ENABLED)
    "RevocationListRefreshPeriod": 60,
    "AccelByte": {
       "BaseUrl": "http://test.accelbyte.io",     // Your environment's domain Base URL (env var: AB_BASE_URL)
@@ -133,7 +134,7 @@ $ make test ENV_FILE_PATH=<your env var file>
 
 The custom function in this sample app can be tested locally using Swagger UI.
 
-1. If **PLUGIN_GRPC_SERVER_AUTH_ENABLED** is true, you'll need user's access token to access the REST API service. You can generate user's access token with `getusertoken.sh` shell script.
+1. If **PLUGIN_GRPC_SERVER_AUTH_ENABLED** is `true`, you'll need user's access token to access the REST API service. You can generate user's access token with [getusertoken.sh](getusertoken.sh) shell script.
    To run it, you'll need to set these environment variables:
    ```shell
    $ export AB_BASE_URL='http://test.accelbyte.io'    # Your environment's domain Base URL
