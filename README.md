@@ -91,8 +91,7 @@ flow properly when the app is deployed.
       "Namespace": "xxxxxxxxxx",                  // Namespace ID (env var: AB_NAMESPACE)
       "EnableTraceId": true,
       "EnableUserAgentInfo": true,
-      "ResourceName": "EXTENDSERVICEEXTENSIONSERVICE",
-      "ItemIdToGrant": "xxxxxxxxxxxx"             // ItemId to grant (env var: ITEM_ID_TO_GRANT)
+      "ResourceName": "EXTENDSERVICEEXTENSIONSERVICE"
    }
    ```
    > :warning: **Environment variable values will override related configuration values in this file**.
