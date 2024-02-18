@@ -23,7 +23,7 @@ sed -i "s@base_path:[ ]*\"[^\"]\+\"@base_path: \"/${APP_BASE_PATH}\"@" \
 sed -i "s@BasePath[ ]*=[ ]*\"[^\"]\+\"@BasePath = \"/${APP_BASE_PATH}\"@" \
     gateway/pkg/common/config.go
 
-(cd gateway && go run main.go) & GATEWAY_PID=$!
+(cd gateway && BASE_PATH=/$APP_BASE_PATH go run main.go) & GATEWAY_PID=$!
 (cd src/AccelByte.PluginArch.ServiceExtension.Demo.Server && dotnet run) & SERVICE_PID=$!
 
 (for _ in {1..12}; do bash -c "timeout 1 echo > /dev/tcp/127.0.0.1/8000" 2>/dev/null && exit 0 || sleep 5s; done; exit 1)
