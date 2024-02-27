@@ -7,7 +7,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="AccelByte.Sdk" Version="0.48.0" />
+		<PackageReference Include="AccelByte.Sdk" Version="0.54.0" />
 		<PackageReference Include="Grpc.AspNetCore" Version="2.55.0" />
 		<PackageReference Include="Grpc.AspNetCore.HealthChecks" Version="2.55.0" />
 		<PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.55.0" />
