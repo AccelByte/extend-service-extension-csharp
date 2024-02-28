@@ -46,7 +46,7 @@ To build this sample app, use the following command.
 make build
 ```
 
-For more details about these commands, see [Makefile](Makefile).
+For more details about these commands, see [Makefile](../Makefile).
 
 ## Running
 
