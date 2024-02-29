@@ -19,7 +19,7 @@ get_code_verifier()
 
 get_code_challenge()
 {
-    echo -n "$1" | sha256sum | xxd -r -p | base64 -w 0 | sed -e 's/\+/-/g' -e 's/\//\_/g' -e 's/=//g'
+    echo -n "$1" | sha256sum | xxd -r -p | base64 | tr -d '\n' | sed -e 's/\+/-/g' -e 's/\//\_/g' -e 's/=//g'
 }
 
 function api_curl()
