@@ -40,7 +40,7 @@ namespace AccelByte.PluginArch.ServiceExtension.Demo.Server
                 .UseAutoTokenRefresh()
                 .Build();
 
-            Sdk.LoginClient();
+            Sdk.LoginClient(true);
         }
     }
 }
