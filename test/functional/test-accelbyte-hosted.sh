@@ -141,11 +141,6 @@ APP_BASE_PATH=$(echo "$APP_DETAILS" | jq -r '.basePath')
 
 ./extend-helper-cli dockerlogin --namespace $AB_NAMESPACE --app $APP_NAME -p | docker login -u AWS --password-stdin $APP_REPO_HOST
 
-sed -i "s@base_path:[ ]*\"[^\"]\+\"@base_path: \"/${APP_BASE_PATH}\"@" \
-    src/AccelByte.PluginArch.ServiceExtension.Demo.Server/Protos/guildService.proto
-sed -i "s@BasePath[ ]*=[ ]*\"[^\"]\+\"@BasePath = \"/${APP_BASE_PATH}\"@" \
-    gateway/pkg/common/config.go
-
 #make build
 make imagex_push REPO_URL=$APP_REPO_URL IMAGE_TAG=v0.0.1
 

@@ -18,11 +18,6 @@ trap clean_up EXIT
 
 echo '# Build and run Extend app locally'
 
-sed -i "s@base_path:[ ]*\"[^\"]\+\"@base_path: \"/${APP_BASE_PATH}\"@" \
-    src/AccelByte.PluginArch.ServiceExtension.Demo.Server/Protos/guildService.proto
-sed -i "s@BasePath[ ]*=[ ]*\"[^\"]\+\"@BasePath = \"/${APP_BASE_PATH}\"@" \
-    gateway/pkg/common/config.go
-
 (cd gateway && BASE_PATH=/$APP_BASE_PATH go run main.go) & GATEWAY_PID=$!
 (cd src/AccelByte.PluginArch.ServiceExtension.Demo.Server && dotnet run) & SERVICE_PID=$!
 
