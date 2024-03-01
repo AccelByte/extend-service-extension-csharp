@@ -198,7 +198,7 @@ if ! [ "$STATUS" = "R" ]; then
     exit 1
 fi
 
-sleep 5
+sleep 60
 
 echo '# Testing Extend app using demo script'
 
