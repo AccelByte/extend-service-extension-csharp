@@ -45,16 +45,20 @@ flow properly when the app is deployed.
 
    a. Base URL:
 
-      - For `Starter` tier e.g.  https://spaceshooter.gamingservices.accelbyte.io
+      - For `Starter` tier e.g.  https://spaceshooter.prod.gamingservices.accelbyte.io
       - For `Premium` tier e.g.  https://dev.accelbyte.io
 
    b. [Create a Game Namespace](https://docs.accelbyte.io/gaming-services/tutorials/how-to/create-a-game-namespace/) if you don't have one yet. Keep the `Namespace ID`.
 
 
    c. [Create an OAuth Client](https://docs.accelbyte.io/gaming-services/services/access/authorization/manage-access-control-for-applications/#create-an-iam-client) with confidential client type with the following permissions. Keep the `Client ID` and `Client Secret`.
-   
+
+   - For AGS Premium customers:
       - `ADMIN:ROLE [READ]` (required to be able to validate access token and permissions)
       - `ADMIN:NAMESPACE:{namespace}:CLOUDSAVE:RECORD [CREATE, READ, UPDATE, DELETE]` (required to be able to create, read, update, and delete cloudsave records)
+   - For AGS Starter customers:
+      - IAM -> Roles (Read)
+      - Cloud Save -> Game Records (Create, Read, Update, Delete)
 
 ## Setup
 
