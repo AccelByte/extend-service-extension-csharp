@@ -88,6 +88,9 @@ test_functional_local_hosted:
 
 test_functional_accelbyte_hosted:
 	@test -n "$(ENV_PATH)" || (echo "ENV_PATH is not set"; exit 1)
+ifeq ($(shell uname), Linux)
+	$(eval DARGS := -u $$(shell id -u):$$(shell id -g) --group-add $$(shell getent group docker | cut -d ':' -f 3))
+endif
 	docker build --tag service-extension-test-functional -f test/functional/Dockerfile test/functional && \
 	docker run --rm -t \
 		--env-file $(ENV_PATH) \
@@ -96,8 +99,7 @@ test_functional_accelbyte_hosted:
 		-e DOTNET_CLI_HOME="/data" \
 		-e XDG_DATA_HOME="/data" \
 		-e DOCKER_CONFIG=/tmp/.docker \
-		-u $$(id -u):$$(id -g) \
-		--group-add $$(getent group docker | cut -d ':' -f 3) \
+		$(DARGS) \
 		-v /var/run/docker.sock:/var/run/docker.sock \
 		-v $$(pwd):/data \
 		-w /data service-extension-test-functional bash ./test/functional/test-accelbyte-hosted.sh
