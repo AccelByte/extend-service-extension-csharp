@@ -31,8 +31,8 @@ gen-gateway:
 mod-gateway:
 	docker run -t --rm -u $$(id -u):$$(id -g) \
 		-e GOCACHE=/data/.cache/go-cache \
-		-v $$(pwd)/gateway:/data \
-		-w /data/ golang:1.20-alpine3.19 \
+		-v $$(pwd):/data \
+		-w /data/gateway golang:1.20-alpine3.19 \
 		go mod tidy
 
 build: gen-gateway mod-gateway
