@@ -4,3 +4,4 @@ pkg/pb
 .cache/
 src/*/bin
 src/*/obj
+src/.vs
