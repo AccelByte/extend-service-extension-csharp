@@ -42,12 +42,6 @@ build: gen-gateway mod-gateway
 		mcr.microsoft.com/dotnet/sdk:$(DOTNETVER) \
 		sh -c "mkdir -p /data/.tmp && cp -r /data/src /data/.tmp/src && cd /data/.tmp/src && dotnet build && mkdir -p /data/.output && cp -r /data/.tmp/src/AccelByte.PluginArch.ServiceExtension.Demo.Server/bin/* /data/.output/ && rm -rf /data/.tmp"
 
-image-service:
-	docker build -f Dockerfile.service -t ${IMAGE_NAME}-service .
-
-image-gateway:
-	docker build -f Dockerfile.gateway -t ${IMAGE_NAME}-gateway .
-
 image:
 	docker build -t ${IMAGE_NAME} .
 
