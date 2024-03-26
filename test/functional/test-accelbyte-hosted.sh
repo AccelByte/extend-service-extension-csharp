@@ -84,6 +84,11 @@ fi
 
 CODE="$(cat api_curl_http_header.out | grep -o 'code=[a-f0-9]\+' | cut -d= -f2)"
 
+if [ "$CODE" == "null" ]; then
+    cat api_curl_http_response.out
+    exit 1
+fi
+
 ACCESS_TOKEN="$(api_curl ${AB_BASE_URL}/iam/v3/oauth/token \
     -H 'Content-Type: application/x-www-form-urlencoded' -u "$AB_CLIENT_ID:$AB_CLIENT_SECRET" \
     -d "code=$CODE&grant_type=authorization_code&client_id=$AB_CLIENT_ID&code_verifier=$CODE_VERIFIER" | jq --raw-output .access_token)"
