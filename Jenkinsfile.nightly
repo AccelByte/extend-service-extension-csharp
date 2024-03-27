@@ -49,15 +49,15 @@ pipeline {
             }
           }
         }
-        // stage('AccelByte Hosted') {
-        //   steps {
-        //     withCredentials([file(credentialsId: 'extend-sample-app-integration-test-env', variable: 'ENV_PATH')]) {
-        //       sh 'cat $ENV_PATH > tmp.env'
-        //       sh "{ set +x; } 2>/dev/null; echo '+ echo -e ****'; printf '\n${params.ENV_VAR_OVERRIDE}' >> tmp.env"
-        //       sh 'make test_functional_accelbyte_hosted ENV_PATH=tmp.env'
-        //     }
-        //   }
-        // }
+        stage('AccelByte Hosted') {
+          steps {
+            withCredentials([file(credentialsId: 'extend-sample-app-integration-test-env', variable: 'ENV_PATH')]) {
+              sh 'cat $ENV_PATH > tmp.env'
+              sh "{ set +x; } 2>/dev/null; echo '+ echo -e ****'; printf '\n${params.ENV_VAR_OVERRIDE}' >> tmp.env"
+              sh 'make test_functional_accelbyte_hosted ENV_PATH=tmp.env'
+            }
+          }
+        }
       }
     }
   }
