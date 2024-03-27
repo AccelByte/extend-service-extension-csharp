@@ -25,7 +25,7 @@ RUN apk update && apk add --no-cache supervisor procps
 COPY supervisord.conf /etc/supervisor/supervisord.conf
 WORKDIR /app
 COPY --from=grpc-gateway-builder /output/grpc_gateway .
-COPY gateway/guildService.swagger.json ./apidocs/
+COPY gateway/*.swagger.json ./apidocs/
 COPY gateway/third_party ./third_party
 COPY --from=grpc-server-builder /output/* .
 # gRPC server port, gRPC gateway port, Prometheus /metrics port
