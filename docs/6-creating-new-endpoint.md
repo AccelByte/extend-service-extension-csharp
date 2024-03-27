@@ -108,9 +108,9 @@ Permission control via `permission.proto`
 
 After defining the service and methods in the `.proto` file, build the service project using `dotnet build` inside the service project directory. This will re-generate all grpc related models and service class. Then we run the protoc compiler to generate the corresponding grpc-gateway code.
 
-## 6.2 Generating gRPC Gateway Go and Java Code
+## 6.2 Generating gRPC Gateway Go and C# Code
 
-After updating our .proto file, we need to generate Go and Java code from it.
+After updating our .proto file, we need to generate Go and C# code from it.
 The protobuf compiler `protoc` is used to generate Go code from our .proto file. 
 However, in our setup, we've simplified this with a `Makefile`.
 
@@ -119,3 +119,25 @@ make gen-gateway
 ```
 
 > :warning: This action will clear all files inside `gateway/pkg/pb`. This directory is reserved for grpc-gateway auto-generated code. Do not put your code inside this directory as it will be removed if you run this action.
+
+## 6.3 Changing Service Name
+
+It is possible to change the name of the service in protobuf file.
+```protobuf
+service GuildService {
+  ...
+}
+```
+For this case we will change `GuildService` into any name, for example `AnotherService`. After we change the service name, we will need to run `dotnet build` again so the grpc tools will pick up the changes and re-generate all grpc related models and service class in C# code. Then we need to regenerate grpc-gateway code again using `make gen-gateway`.
+
+Since the service name is updated, we need to remove `gateway/guildService.swagger.json` file since it is no longer valid. Also we need to update [`gateway/pkg/common/gateway.go`](../gateway/pkg/common/gateway.go) file to use the new service handler object.
+```go
+
+  // LINE 30
+	if err := pb.RegisterGuildServiceHandler(ctx, mux, conn); err != nil {
+		return nil, err
+	}
+
+}
+```
+Replace `if err := pb.RegisterGuildServiceHandler(ctx, mux, conn); err != nil {` line with `if err := pb.RegisterAnotherServiceHandler(ctx, mux, conn); err != nil {`. Make sure that `RegisterAnotherServiceHandler` function is exists in `gateway/pkg/pb/anotherService.pb.gw.go`.
