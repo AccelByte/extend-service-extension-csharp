@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2022-2023 AccelByte Inc. All Rights Reserved.
+﻿// Copyright (c) 2022-2024 AccelByte Inc. All Rights Reserved.
 // This is licensed software from AccelByte Inc, for limitations
 // and restrictions contact your company contract manager.
 
@@ -68,15 +68,15 @@ namespace AccelByte.PluginArch.ServiceExtension.Demo.Server
                 int actNum = (int)qAction;
                 bool b = _ABProvider.Sdk.ValidateToken(authParts[1], qPermission, actNum);
                 if (!b)
-                    throw new RpcException(new Status(StatusCode.PermissionDenied, $"Permission {qPermission} [{qAction}] is required."));
-
-                return await continuation(request, context);
+                    throw new RpcException(new Status(StatusCode.PermissionDenied, $"Permission {qPermission} [{qAction}] is required."));                
             }
             catch (Exception x)
             {
                 _Logger.LogError(x, $"Authorization error: {x.Message}");
                 throw new RpcException(new Status(StatusCode.Unauthenticated, x.Message));
             }
+
+            return await continuation(request, context);
         }
     }
 }
