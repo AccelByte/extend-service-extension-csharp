@@ -118,9 +118,9 @@ namespace AccelByte.PluginArch.ServiceExtension.Demo.Server
             builder.Services.AddGrpc((opts) =>
             {
                 opts.Interceptors.Add<ExceptionHandlingInterceptor>();
-                opts.Interceptors.Add<DebugLoggerServerInterceptor>();
                 if (enableAuthorization)
                     opts.Interceptors.Add<AuthorizationInterceptor>();
+                opts.Interceptors.Add<DebugLoggerServerInterceptor>();                
             });
             builder.Services.AddGrpcReflection();
 

@@ -70,6 +70,10 @@ namespace AccelByte.PluginArch.ServiceExtension.Demo.Server
                 if (!b)
                     throw new RpcException(new Status(StatusCode.PermissionDenied, $"Permission {qPermission} [{qAction}] is required."));                
             }
+            catch (RpcException)
+            {
+                throw;
+            }
             catch (Exception x)
             {
                 _Logger.LogError(x, $"Authorization error: {x.Message}");
