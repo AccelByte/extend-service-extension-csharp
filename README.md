@@ -208,20 +208,7 @@ will be accessible at http://localhost:3000.
 ## Deploying
 
 After done testing, you may want to deploy this app to `AccelByte Gaming Services`.
-
-1. [Create a new Extend Service Extension App on Admin Portal](https://docs.accelbyte.io/gaming-services/services/extend/service-extension/getting-started-service-extension/#register-and-integrate-custom-service-to-extend-service-extension). Keep the `Repository URI`.
-2. Download and setup [extend-helper-cli](https://github.com/AccelByte/extend-helper-cli/) (only if it has not been done previously).
-3. Perform docker login with `extend-helper-cli` using the following command.
-   ```
-   extend-helper-cli dockerlogin --namespace <my-game> --app <my-app> --login
-   ```
-   > :exclamation: For your convenience, the above `extend-helper-cli` command can also be 
-   copied from `Repository Authentication Command` under the corresponding app detail page.
-4. Build and push sample app docker image to AccelByte ECR using the following command.
-   ```
-   make imagex_push IMAGE_TAG=v0.0.1 REPO_URL=xxxxxxxxxx.dkr.ecr.us-west-2.amazonaws.com/accelbyte/justice/development/extend/xxxxxxxxxx/xxxxxxxxxx
-   ```
-   > :exclamation: **The REPO_URL is obtained from step 1**: It can be found under 'Repository URI' in the app detail.
+Please read [this documentation](https://docs.accelbyte.io/gaming-services/services/extend/service-extension/getting-started-service-extension/#build-and-upload-the-extend-app) on how to deploy Extend Service Extension app.
 
 ## Additional
 
