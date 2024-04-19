@@ -15,7 +15,6 @@ services:
       - PLUGIN_GRPC_SERVER_AUTH_ENABLED
       - ASPNETCORE_ENVIRONMENT=Development
       - OTEL_EXPORTER_ZIPKIN_ENDPOINT=http://host.docker.internal:9411/api/v2/spans # Zipkin
-      - ASPNETCORE_SERILOG_LOKI=http://host.docker.internal:3100
       - BASE_PATH
     extra_hosts:
       - host.docker.internal:host-gateway
