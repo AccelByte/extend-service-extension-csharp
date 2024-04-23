@@ -27,11 +27,11 @@ To be able to run this sample app, you will need to follow these setup steps.
 - Ensure you have configured all required permission for your clientId, in this custom service we're using:
   > :exclamation: For AGS Starter customers, you don't need to add the permissions. All confidential IAM clients already contain the necessary permissions.
   - ADMIN:ROLE [READ]
-    - It was needed since we define our permission as `ADMIN:` in the guildService.proto
+    - It was needed since we define our permission as `ADMIN:` in the service.proto
   - ADMIN:NAMESPACE:{namespace}:CLOUDSAVE:RECORD [CREATE,READ,UPDATE,DELETE]
     - It was needed since we access cloudsave game record endpoint which requires the above permission
 
-- (Optional) `grpc-gateway-dependencies` mentioned in [chapter 4](4-installation-and-setup.md) is up and running if you needed the observability stack
+- (Optional) `grpc-plugin-dependencies` mentioned in [chapter 4](4-installation-and-setup.md) is up and running if you needed the observability stack
 
 ## Change API base path (Optional)
 

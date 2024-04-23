@@ -135,7 +135,7 @@ using AccelByte.Extend.ServiceExtension.Server.Model;
 
 namespace AccelByte.Extend.ServiceExtension.Server.Services
 {
-    public class SampleGuildService : GuildService.GuildServiceBase
+    public class MyService : Service.ServiceBase
     {
         private readonly IAccelByteServiceProvider _ABProvider;
 
@@ -194,7 +194,7 @@ public override Task<CreateOrUpdateGuildProgressResponse> CreateOrUpdateGuildPro
 }
 ```
 
-For more accurate details how it was implemented please refer to [src/AccelByte.Extend.ServiceExtension.Server/Services/SampleGuildService.cs](src/AccelByte.Extend.ServiceExtension.Server/Services/SampleGuildService.cs)
+For more accurate details how it was implemented please refer to [src/AccelByte.Extend.ServiceExtension.Server/Services/MyService.cs](src/AccelByte.Extend.ServiceExtension.Server/Services/MyService.cs)
 
 That's it! You've now integrated AccelByte's CloudSave into your GuildService. 
 You can now use CloudSave to save and retrieve guild progress, along with any other 

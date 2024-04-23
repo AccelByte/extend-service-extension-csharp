@@ -8,7 +8,7 @@ You should have a basic understanding of the following topics:
 
 - Basic .NET programming using C# knowledge
 - Basic understanding of RESTful APIs
-- Basic Docker and Docker-compose knowledge
+- Basic Docker and Docker Compose knowledge
 
 ## 2.2. System Setup
 

@@ -8,11 +8,10 @@ setting up the project.
 
 To get started, make sure you have the following software installed on your system:
 
-1. [.NET SDK](https://dotnet.microsoft.com/en-us/download): Please refer to the official installation guide.
-1. [Go](https://golang.org/dl/): Please refer to the official installation guide.
+1. [Bash](https://www.gnu.org/software/bash/): This is an sh-compatible shell that incorporates useful features from the Korn shell (ksh) and the C shell (csh).
 2. [Docker](https://docs.docker.com/engine/install/): Docker is a platform for developers to develop, deploy, and run applications with containers.
-3. [Docker Compose](https://docs.docker.com/compose/install/): Docker Compose is a tool for defining and running multi-container Docker applications.
-4. [Make](https://www.gnu.org/software/make/): Make is a build automation tool.
+3. [Make](https://www.gnu.org/software/make/): Make is a build automation tool.
+4. [.NET SDK](https://dotnet.microsoft.com/en-us/download): Please refer to the official installation guide.
 
 ### 4.2. Cloning and Running the dependency repo (Optional)
 
