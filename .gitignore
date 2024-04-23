@@ -456,3 +456,4 @@ $RECYCLE.BIN/
 
 
 .env
+gateway/grpc_gateway

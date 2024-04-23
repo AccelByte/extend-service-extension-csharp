@@ -10,13 +10,32 @@ BUILDER := grpc-plugin-server-builder
 
 .PHONY: test
 
+gen_gateway:
+	rm -rf gateway/apidocs gateway/pkg/pb
+	mkdir -p gateway/apidocs gateway/pkg/pb
+	docker run -t --rm -u $$(id -u):$$(id -g) \
+		-v $$(pwd)/src:/src \
+		-v $$(pwd)/gateway:/gateway \
+		-w /gateway rvolosatovs/protoc:latest \
+			--proto_path=/src/AccelByte.PluginArch.ServiceExtension.Demo.Server/Protos \
+			--go_out=pkg/pb \
+			--go_opt=paths=source_relative \
+			--go-grpc_out=require_unimplemented_servers=false:pkg/pb \
+			--grpc-gateway_out=logtostderr=true:pkg/pb \
+			--grpc-gateway_opt paths=source_relative \
+			--openapiv2_out . \
+			--openapiv2_opt logtostderr=true \
+			--openapiv2_opt use_go_templates=true \
+			--go-grpc_opt=paths=source_relative /src/AccelByte.PluginArch.ServiceExtension.Demo.Server/Protos/*.proto
+	mv gateway/*.swagger.json gateway/apidocs
+
 build: build_server build_gateway
 
 build_server:
 	rm -rf .output .tmp
 	mkdir -p .output
 	cp -r src .tmp/
-	docker run --rm -u $$(id -u):$$(id -g) \
+	docker run -t --rm -u $$(id -u):$$(id -g) \
 		-e HOME="/data/.cache" \
 		-e DOTNET_CLI_HOME="/data/.cache" \
 		-v $$(pwd):/data \
@@ -26,28 +45,42 @@ build_server:
 	cp -r .tmp/AccelByte.PluginArch.ServiceExtension.Demo.Server/bin/* \
 			.output/
 
-build_gateway:
-	rm -rf gateway/pkg/pb/*
-	mkdir -p gateway/pkg/pb
-	docker run -t --rm -u $$(id -u):$$(id -g) \
-		-v $$(pwd)/src:/source \
-		-v $$(pwd)/gateway:/data \
-		-w /data/ rvolosatovs/protoc:latest \
-			--proto_path=/source/AccelByte.PluginArch.ServiceExtension.Demo.Server/Protos \
-			--go_out=pkg/pb \
-			--go_opt=paths=source_relative \
-			--go-grpc_out=require_unimplemented_servers=false:pkg/pb \
-			--grpc-gateway_out=logtostderr=true:pkg/pb \
-			--grpc-gateway_opt paths=source_relative \
-			--openapiv2_out . \
-			--openapiv2_opt logtostderr=true \
-			--openapiv2_opt use_go_templates=true \
-			--go-grpc_opt=paths=source_relative /source/AccelByte.PluginArch.ServiceExtension.Demo.Server/Protos/*.proto
+
+build_gateway: gen_gateway
 	docker run -t --rm -u $$(id -u):$$(id -g) \
 		-e GOCACHE=/data/.cache/go-cache \
+		-e GOPATH=/data/.cache/go-path \
 		-v $$(pwd):/data \
-		-w /data/gateway golang:1.20-alpine3.19 \
+		-w /data/gateway \
+		golang:1.20-alpine3.19 \
 		go build -o grpc_gateway
+
+run_server:
+	rm -rf .output .tmp
+	mkdir -p .output
+	cp -r src .tmp/
+	docker run --rm -it -u $$(id -u):$$(id -g) \
+		-e HOME="/data/.cache" \
+		-e DOTNET_CLI_HOME="/data/.cache" \
+		--env-file .env \
+		-v $$(pwd):/data \
+		-w /data/.tmp/AccelByte.PluginArch.ServiceExtension.Demo.Server \
+		-p 6565:6565 \
+		-p 8080:8080 \
+		mcr.microsoft.com/dotnet/sdk:$(DOTNETVER) \
+		dotnet run
+
+run_gateway: gen_gateway
+	docker run -it --rm -u $$(id -u):$$(id -g) \
+		-e GOCACHE=/data/.cache/go-cache \
+		-e GOPATH=/data/.cache/go-path \
+		--env-file .env \
+		-v $$(pwd):/data \
+		-w /data/gateway \
+		-p 8000:8000 \
+		--add-host host.docker.internal:host-gateway \
+		golang:1.20-alpine3.19 \
+		go run main.go --grpc-addr host.docker.internal:6565
 
 image:
 	docker build -t ${IMAGE_NAME} .

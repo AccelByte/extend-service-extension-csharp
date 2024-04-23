@@ -29,7 +29,7 @@ ARG TARGETARCH
 RUN apk --no-cache add bash
 WORKDIR /app
 COPY --from=grpc-gateway-builder /output/$TARGETOS/$TARGETARCH/grpc_gateway .
-COPY gateway/*.swagger.json ./apidocs/
+COPY gateway/apidocs ./apidocs
 COPY gateway/third_party ./third_party
 COPY --from=grpc-server-builder /output/* .
 COPY wrapper.sh .
