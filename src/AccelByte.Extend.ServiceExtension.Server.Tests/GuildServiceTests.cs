@@ -9,12 +9,12 @@ using NUnit.Framework;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 
-using AccelByte.PluginArch.ServiceExtension.Demo.Server.Services;
+using AccelByte.Extend.ServiceExtension.Server.Services;
 
 using AccelByte.Sdk.Core;
-using AccelByte.PluginArch.ServiceExtension.Demo.Server.Model;
+using AccelByte.Extend.ServiceExtension.Server.Model;
 
-namespace AccelByte.PluginArch.ServiceExtension.Demo.Tests
+namespace AccelByte.Extend.ServiceExtension.Server.Tests
 {
     [TestFixture]
     public class GuildServiceTests

@@ -4,7 +4,7 @@
 
 using AccelByte.Sdk.Core;
 
-namespace AccelByte.PluginArch.ServiceExtension.Demo.Server
+namespace AccelByte.Extend.ServiceExtension.Server
 {
     public interface IAccelByteServiceProvider
     {

@@ -1,6 +1,6 @@
 ﻿{
   "profiles": {
-    "AccelByte.PluginArch.ServiceExtension.Demo.Server": {
+    "AccelByte.Extend.ServiceExtension.Server": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": false,

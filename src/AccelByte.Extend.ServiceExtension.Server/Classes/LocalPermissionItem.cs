@@ -4,7 +4,7 @@
 
 using System;
 
-namespace AccelByte.PluginArch.ServiceExtension.Demo.Server
+namespace AccelByte.Extend.ServiceExtension.Server
 {
     public class LocalPermissionItem
     {

@@ -11,7 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Grpc.Core;
 using Grpc.Core.Interceptors;
 
-namespace AccelByte.PluginArch.ServiceExtension.Demo.Server
+namespace AccelByte.Extend.ServiceExtension.Server
 {
     public class DebugLoggerServerInterceptor : Interceptor
     {

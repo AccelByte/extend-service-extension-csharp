@@ -17,7 +17,7 @@ gen_gateway:
 		-v $$(pwd)/src:/src \
 		-v $$(pwd)/gateway:/gateway \
 		-w /gateway rvolosatovs/protoc:latest \
-			--proto_path=/src/AccelByte.PluginArch.ServiceExtension.Demo.Server/Protos \
+			--proto_path=/src/AccelByte.Extend.ServiceExtension.Server/Protos \
 			--go_out=pkg/pb \
 			--go_opt=paths=source_relative \
 			--go-grpc_out=require_unimplemented_servers=false:pkg/pb \
@@ -26,7 +26,7 @@ gen_gateway:
 			--openapiv2_out . \
 			--openapiv2_opt logtostderr=true \
 			--openapiv2_opt use_go_templates=true \
-			--go-grpc_opt=paths=source_relative /src/AccelByte.PluginArch.ServiceExtension.Demo.Server/Protos/*.proto
+			--go-grpc_opt=paths=source_relative /src/AccelByte.Extend.ServiceExtension.Server/Protos/*.proto
 	mv gateway/*.swagger.json gateway/apidocs
 
 build: build_server build_gateway
@@ -42,7 +42,7 @@ build_server:
 		-w /data/.tmp \
 		mcr.microsoft.com/dotnet/sdk:$(DOTNETVER) \
 		dotnet build
-	cp -r .tmp/AccelByte.PluginArch.ServiceExtension.Demo.Server/bin/* \
+	cp -r .tmp/AccelByte.Extend.ServiceExtension.Server/bin/* \
 			.output/
 
 
@@ -64,7 +64,7 @@ run_server:
 		-e DOTNET_CLI_HOME="/data/.cache" \
 		--env-file .env \
 		-v $$(pwd):/data \
-		-w /data/.tmp/AccelByte.PluginArch.ServiceExtension.Demo.Server \
+		-w /data/.tmp/AccelByte.Extend.ServiceExtension.Server \
 		-p 6565:6565 \
 		-p 8080:8080 \
 		mcr.microsoft.com/dotnet/sdk:$(DOTNETVER) \

@@ -4,7 +4,7 @@ Now that we have defined our service, the next step is to implement our service.
 This is where we define the actual logic of our gRPC methods.
 You can read more information related to .NET gRPC ASPNET Core [here](https://learn.microsoft.com/en-us/aspnet/core/grpc/?view=aspnetcore-6.0).
 
-We'll be doing this in the `src/AccelByte.PluginArch.ServiceExtension.Demo.Server/Services/SampleGuildService.cs` file.
+We'll be doing this in the `src/AccelByte.Extend.ServiceExtension.Server/Services/SampleGuildService.cs` file.
 
 Here's a brief outline of what this chapter will cover:
 
@@ -27,7 +27,7 @@ using Microsoft.Extensions.Configuration;
 using Grpc.Core;
 using AccelByte.Custom.Guild;
 
-namespace AccelByte.PluginArch.ServiceExtension.Demo.Server.Services
+namespace AccelByte.Extend.ServiceExtension.Server.Services
 {
     public class SampleGuildService : GuildService.GuildServiceBase
     {

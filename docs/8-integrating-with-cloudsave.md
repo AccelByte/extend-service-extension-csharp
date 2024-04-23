@@ -25,7 +25,7 @@ using Microsoft.Extensions.Configuration;
 using AccelByte.Sdk.Core.Logging;
 using AccelByte.Sdk.Core.Repository;
 
-namespace AccelByte.PluginArch.ServiceExtension.Demo.Server
+namespace AccelByte.Extend.ServiceExtension.Server
 {
     public class AppSettingConfigRepository : IConfigRepository
     {
@@ -62,7 +62,7 @@ namespace AccelByte.PluginArch.ServiceExtension.Demo.Server
 using System;
 using AccelByte.Sdk.Core;
 
-namespace AccelByte.PluginArch.ServiceExtension.Demo.Server
+namespace AccelByte.Extend.ServiceExtension.Server
 {
     public interface IAccelByteServiceProvider
     {
@@ -82,7 +82,7 @@ using Microsoft.Extensions.Configuration;
 
 using AccelByte.Sdk.Core;
 
-namespace AccelByte.PluginArch.ServiceExtension.Demo.Server
+namespace AccelByte.Extend.ServiceExtension.Server
 {
     public class DefaultAccelByteServiceProvider : IAccelByteServiceProvider
     {
@@ -131,9 +131,9 @@ using Microsoft.Extensions.Configuration;
 using Grpc.Core;
 using AccelByte.Custom.Guild;
 using AccelByte.Sdk.Api;
-using AccelByte.PluginArch.ServiceExtension.Demo.Server.Model;
+using AccelByte.Extend.ServiceExtension.Server.Model;
 
-namespace AccelByte.PluginArch.ServiceExtension.Demo.Server.Services
+namespace AccelByte.Extend.ServiceExtension.Server.Services
 {
     public class SampleGuildService : GuildService.GuildServiceBase
     {
@@ -194,7 +194,7 @@ public override Task<CreateOrUpdateGuildProgressResponse> CreateOrUpdateGuildPro
 }
 ```
 
-For more accurate details how it was implemented please refer to [src/AccelByte.PluginArch.ServiceExtension.Demo.Server/Services/SampleGuildService.cs](src/AccelByte.PluginArch.ServiceExtension.Demo.Server/Services/SampleGuildService.cs)
+For more accurate details how it was implemented please refer to [src/AccelByte.Extend.ServiceExtension.Server/Services/SampleGuildService.cs](src/AccelByte.Extend.ServiceExtension.Server/Services/SampleGuildService.cs)
 
 That's it! You've now integrated AccelByte's CloudSave into your GuildService. 
 You can now use CloudSave to save and retrieve guild progress, along with any other 

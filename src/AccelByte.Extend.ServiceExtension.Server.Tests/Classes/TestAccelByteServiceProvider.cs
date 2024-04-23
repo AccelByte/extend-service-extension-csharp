@@ -3,9 +3,8 @@
 // and restrictions contact your company contract manager.
 
 using AccelByte.Sdk.Core;
-using AccelByte.PluginArch.ServiceExtension.Demo.Server;
 
-namespace AccelByte.PluginArch.ServiceExtension.Demo.Tests
+namespace AccelByte.Extend.ServiceExtension.Server.Tests
 {
     public class TestAccelByteServiceProvider : TokenValidator, IAccelByteServiceProvider
     {

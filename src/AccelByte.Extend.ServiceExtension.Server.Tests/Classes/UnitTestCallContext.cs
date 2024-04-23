@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 using Grpc.Core;
 
-namespace AccelByte.PluginArch.ServiceExtension.Demo.Tests
+namespace AccelByte.Extend.ServiceExtension.Server.Tests
 {
     public class UnitTestCallContext : ServerCallContext
     {

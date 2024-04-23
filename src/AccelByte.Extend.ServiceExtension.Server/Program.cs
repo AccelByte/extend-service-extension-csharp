@@ -18,9 +18,9 @@ using OpenTelemetry.Metrics;
 using OpenTelemetry.Extensions.Propagators;
 
 using Prometheus;
-using AccelByte.PluginArch.ServiceExtension.Demo.Server.Services;
+using AccelByte.Extend.ServiceExtension.Server.Services;
 
-namespace AccelByte.PluginArch.ServiceExtension.Demo.Server
+namespace AccelByte.Extend.ServiceExtension.Server
 {
     public class Program
     {

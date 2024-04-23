@@ -2,9 +2,9 @@
 FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:6.0-alpine3.19 as grpc-server-builder
 RUN apk update && apk add --no-cache gcompat
 WORKDIR /build
-COPY src/AccelByte.PluginArch.ServiceExtension.Demo.Server/*.csproj .
+COPY src/AccelByte.Extend.ServiceExtension.Server/*.csproj .
 RUN dotnet restore
-COPY src/AccelByte.PluginArch.ServiceExtension.Demo.Server .
+COPY src/AccelByte.Extend.ServiceExtension.Server .
 RUN dotnet publish -c Release -o /output
 
 

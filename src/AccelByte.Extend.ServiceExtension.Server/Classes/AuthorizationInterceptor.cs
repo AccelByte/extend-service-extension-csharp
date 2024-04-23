@@ -11,9 +11,7 @@ using Grpc.Core;
 using Grpc.Core.Interceptors;
 using Google.Protobuf.Reflection;
 
-using AccelByte.Extend.ServiceExtension;
-
-namespace AccelByte.PluginArch.ServiceExtension.Demo.Server
+namespace AccelByte.Extend.ServiceExtension.Server
 {
     public class AuthorizationInterceptor : Interceptor
     {

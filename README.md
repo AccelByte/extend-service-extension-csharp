@@ -144,9 +144,7 @@ docker compose up --build
 
 ### Unit Test
 
-Unit test is provided in `src/AccelByte.PluginArch.ServiceExtension.Demo.Tests`. 
-To run the test, you'll need to provide the env var file mentioned below.
-
+Unit test is provided to test the functionaly without actually invoking the grpc function. Unit test is provided in `src/AccelByte.Extend.ServiceExtension.Server.Tests`. To run the test, you'll need to fill the env var file mentioned below,
 ```
 AB_BASE_URL='http://test.accelbyte.io'       # Your environment's domain Base URL
 AB_CLIENT_ID='xxxxxxxxxx'                    # Client ID from the Prerequisites section

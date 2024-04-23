@@ -10,7 +10,7 @@ using Microsoft.Extensions.Configuration;
 using AccelByte.Sdk.Core;
 using AccelByte.Sdk.Feature.AutoTokenRefresh;
 
-namespace AccelByte.PluginArch.ServiceExtension.Demo.Server
+namespace AccelByte.Extend.ServiceExtension.Server
 {
     public class DefaultAccelByteServiceProvider : TokenValidator, IAccelByteServiceProvider
     {

@@ -19,7 +19,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\AccelByte.PluginArch.ServiceExtension.Demo.Server\AccelByte.PluginArch.ServiceExtension.Demo.Server.csproj" />
+	  <ProjectReference Include="..\AccelByte.Extend.ServiceExtension.Server\AccelByte.Extend.ServiceExtension.Server.csproj" />
 	</ItemGroup>
 
 </Project>

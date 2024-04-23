@@ -7,14 +7,14 @@ This chapter offers an overview of the Guild Service's project structure. Unders
 ├── docs
 ├── gateway                                                 # gRPC Gateway code (GoLang)
 ├── src
-│   ├── AccelByte.PluginArch.ServiceExtension.Demo.Server   # Service's project
+│   ├── AccelByte.Extend.ServiceExtension.Server   # Service's project
 │   │   ├── Classes                                         # Put your misc classes here
 │   │   ├── Model                                           # Put your data model classes here
 │   │   ├── Protos                                          # Your protobuf folder
 │   │   ├── Services                                        # Your gRPC Server implementation here
 │   │   ├── appsettings.json                                # Default configuration (do not put confidential values here)
 │   │   └── Program.cs                                      # Entrypoint
-│   └── AccelByte.PluginArch.ServiceExtension.Demo.Tests    # Service's Unit Test
+│   └── AccelByte.Extend.ServiceExtension.Server.Tests    # Service's Unit Test
 ├── Dockerfile                                              # To build complete image with service and grpc-gateway
 ├── docker-compose.yaml                                     # Compose file that use complete image
 └── Makefile

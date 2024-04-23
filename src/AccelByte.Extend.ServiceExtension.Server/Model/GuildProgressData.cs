@@ -5,10 +5,9 @@
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using AccelByte.Extend.ServiceExtension;
 using AccelByte.Sdk.Api.Cloudsave.Model;
 
-namespace AccelByte.PluginArch.ServiceExtension.Demo.Server.Model
+namespace AccelByte.Extend.ServiceExtension.Server.Model
 {
     public class GuildProgressData : ModelsGameRecordRequest
     {

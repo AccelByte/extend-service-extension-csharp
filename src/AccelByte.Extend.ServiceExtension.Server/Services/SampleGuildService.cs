@@ -8,11 +8,10 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
 using Grpc.Core;
-using AccelByte.Extend.ServiceExtension;
 using AccelByte.Sdk.Api;
-using AccelByte.PluginArch.ServiceExtension.Demo.Server.Model;
+using AccelByte.Extend.ServiceExtension.Server.Model;
 
-namespace AccelByte.PluginArch.ServiceExtension.Demo.Server.Services
+namespace AccelByte.Extend.ServiceExtension.Server.Services
 {
     public class SampleGuildService : Service.ServiceBase
     {

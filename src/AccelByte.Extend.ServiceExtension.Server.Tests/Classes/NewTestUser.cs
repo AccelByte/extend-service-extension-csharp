@@ -10,7 +10,7 @@ using AccelByte.Sdk.Core.Util;
 using AccelByte.Sdk.Api;
 using AccelByte.Sdk.Api.Iam.Model;
 
-namespace AccelByte.PluginArch.ServiceExtension.Demo.Tests
+namespace AccelByte.Extend.ServiceExtension.Server.Tests
 {
     public class NewTestUser
     {

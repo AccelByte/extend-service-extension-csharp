@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 using Grpc.Core;
 using Grpc.Core.Interceptors;
 
-namespace AccelByte.PluginArch.ServiceExtension.Demo.Server
+namespace AccelByte.Extend.ServiceExtension.Server
 {
     public class ExceptionHandlingInterceptor : Interceptor
     {

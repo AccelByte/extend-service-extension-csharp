@@ -7,7 +7,7 @@ In this chapter, we will be adding new endpoints to our service. This involves t
 
 ## 6.1 Defining the Service in the `.proto` File
 
-gRPC services and messages are defined in `.proto` files. Our `.proto` file is located in `src/AccelByte.PluginArch.ServiceExtension.Demo.Server/Protos`. Let's add new service methods to our `GuildService`:
+gRPC services and messages are defined in `.proto` files. Our `.proto` file is located in `src/AccelByte.Extend.ServiceExtension.Server/Protos`. Let's add new service methods to our `GuildService`:
 
 ```protobuf
 service GuildService {

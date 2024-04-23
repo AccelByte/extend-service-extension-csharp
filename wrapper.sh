@@ -1,6 +1,6 @@
 #!/bin/bash
 
-./AccelByte.PluginArch.ServiceExtension.Demo.Server &
+./AccelByte.Extend.ServiceExtension.Server &
 
 ./grpc_gateway &
 
