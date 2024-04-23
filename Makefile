@@ -8,10 +8,26 @@ IMAGE_NAME := $(shell basename "$$(pwd)")-app
 DOTNETVER := 6.0
 BUILDER := grpc-plugin-server-builder
 
-.PHONY: build image imagex test
+.PHONY: test
 
-gen-gateway:
-	rm -rfv gateway/pkg/pb/*
+build: build_server build_gateway
+
+build_server:
+	rm -rf .output .tmp
+	mkdir -p .output
+	cp -r src .tmp/
+	docker run --rm -u $$(id -u):$$(id -g) \
+		-e HOME="/data/.cache" \
+		-e DOTNET_CLI_HOME="/data/.cache" \
+		-v $$(pwd):/data \
+		-w /data/.tmp \
+		mcr.microsoft.com/dotnet/sdk:$(DOTNETVER) \
+		dotnet build
+	cp -r .tmp/AccelByte.PluginArch.ServiceExtension.Demo.Server/bin/* \
+			.output/
+
+build_gateway:
+	rm -rf gateway/pkg/pb/*
 	mkdir -p gateway/pkg/pb
 	docker run -t --rm -u $$(id -u):$$(id -g) \
 		-v $$(pwd)/src:/source \
@@ -27,20 +43,11 @@ gen-gateway:
 			--openapiv2_opt logtostderr=true \
 			--openapiv2_opt use_go_templates=true \
 			--go-grpc_opt=paths=source_relative /source/AccelByte.PluginArch.ServiceExtension.Demo.Server/Protos/*.proto
-
-mod-gateway:
 	docker run -t --rm -u $$(id -u):$$(id -g) \
 		-e GOCACHE=/data/.cache/go-cache \
 		-v $$(pwd):/data \
 		-w /data/gateway golang:1.20-alpine3.19 \
-		go mod tidy
-
-build: gen-gateway mod-gateway
-	docker run --rm -u $$(id -u):$$(id -g) \
-		-v $$(pwd):/data/ \
-		-e HOME="/data/.cache" -e DOTNET_CLI_HOME="/data/.cache" \
-		mcr.microsoft.com/dotnet/sdk:$(DOTNETVER) \
-		sh -c "mkdir -p /data/.tmp && cp -r /data/src /data/.tmp/src && cd /data/.tmp/src && dotnet build && mkdir -p /data/.output && cp -r /data/.tmp/src/AccelByte.PluginArch.ServiceExtension.Demo.Server/bin/* /data/.output/ && rm -rf /data/.tmp"
+		go build -o grpc_gateway
 
 image:
 	docker build -t ${IMAGE_NAME} .
