@@ -11,23 +11,13 @@ BUILDER := grpc-plugin-server-builder
 .PHONY: test
 
 gen_gateway:
-	rm -rf gateway/apidocs gateway/pkg/pb
-	mkdir -p gateway/apidocs gateway/pkg/pb
 	docker run -t --rm -u $$(id -u):$$(id -g) \
 		-v $$(pwd)/src:/src \
 		-v $$(pwd)/gateway:/gateway \
-		-w /gateway rvolosatovs/protoc:latest \
-			--proto_path=/src/AccelByte.Extend.ServiceExtension.Server/Protos \
-			--go_out=pkg/pb \
-			--go_opt=paths=source_relative \
-			--go-grpc_out=require_unimplemented_servers=false:pkg/pb \
-			--grpc-gateway_out=logtostderr=true:pkg/pb \
-			--grpc-gateway_opt paths=source_relative \
-			--openapiv2_out . \
-			--openapiv2_opt logtostderr=true \
-			--openapiv2_opt use_go_templates=true \
-			--go-grpc_opt=paths=source_relative /src/AccelByte.Extend.ServiceExtension.Server/Protos/*.proto
-	mv gateway/*.swagger.json gateway/apidocs
+		-w /gateway \
+		--entrypoint /bin/bash \
+		rvolosatovs/protoc:4.1.0 \
+			gen_gateway.sh
 
 build: build_server build_gateway
 
