@@ -1,15 +1,15 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "Guild Service API",
+    "title": "Service API",
     "version": "1.0"
   },
   "tags": [
     {
-      "name": "GuildService"
+      "name": "Service"
     }
   ],
-  "basePath": "/guild",
+  "basePath": "/service",
   "schemes": [
     "http",
     "https"
@@ -25,12 +25,12 @@
       "post": {
         "summary": "Update Guild progression",
         "description": "Update Guild progression if not existed yet will create a new one",
-        "operationId": "GuildService_CreateOrUpdateGuildProgress",
+        "operationId": "Service_CreateOrUpdateGuildProgress",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/guildCreateOrUpdateGuildProgressResponse"
+              "$ref": "#/definitions/serviceCreateOrUpdateGuildProgressResponse"
             }
           },
           "default": {
@@ -55,14 +55,14 @@
               "type": "object",
               "properties": {
                 "guildProgress": {
-                  "$ref": "#/definitions/guildGuildProgress"
+                  "$ref": "#/definitions/serviceGuildProgress"
                 }
               }
             }
           }
         ],
         "tags": [
-          "GuildService"
+          "Service"
         ],
         "security": [
           {
@@ -75,12 +75,12 @@
       "get": {
         "summary": "Get guild progression",
         "description": "Get guild progression",
-        "operationId": "GuildService_GetGuildProgress",
+        "operationId": "Service_GetGuildProgress",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/guildGetGuildProgressResponse"
+              "$ref": "#/definitions/serviceGetGuildProgressResponse"
             }
           },
           "default": {
@@ -105,7 +105,7 @@
           }
         ],
         "tags": [
-          "GuildService"
+          "Service"
         ],
         "security": [
           {
@@ -116,40 +116,6 @@
     }
   },
   "definitions": {
-    "guildCreateOrUpdateGuildProgressResponse": {
-      "type": "object",
-      "properties": {
-        "guildProgress": {
-          "$ref": "#/definitions/guildGuildProgress"
-        }
-      }
-    },
-    "guildGetGuildProgressResponse": {
-      "type": "object",
-      "properties": {
-        "guildProgress": {
-          "$ref": "#/definitions/guildGuildProgress"
-        }
-      }
-    },
-    "guildGuildProgress": {
-      "type": "object",
-      "properties": {
-        "guildId": {
-          "type": "string"
-        },
-        "namespace": {
-          "type": "string"
-        },
-        "objectives": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "integer",
-            "format": "int32"
-          }
-        }
-      }
-    },
     "protobufAny": {
       "type": "object",
       "properties": {
@@ -174,6 +140,40 @@
           "items": {
             "type": "object",
             "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "serviceCreateOrUpdateGuildProgressResponse": {
+      "type": "object",
+      "properties": {
+        "guildProgress": {
+          "$ref": "#/definitions/serviceGuildProgress"
+        }
+      }
+    },
+    "serviceGetGuildProgressResponse": {
+      "type": "object",
+      "properties": {
+        "guildProgress": {
+          "$ref": "#/definitions/serviceGuildProgress"
+        }
+      }
+    },
+    "serviceGuildProgress": {
+      "type": "object",
+      "properties": {
+        "guildId": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "objectives": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "format": "int32"
           }
         }
       }

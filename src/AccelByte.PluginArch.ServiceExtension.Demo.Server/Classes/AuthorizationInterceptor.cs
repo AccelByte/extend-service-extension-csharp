@@ -11,9 +11,7 @@ using Grpc.Core;
 using Grpc.Core.Interceptors;
 using Google.Protobuf.Reflection;
 
-using AccelByte.Sdk.Core;
-using AccelByte.Sdk.Feature.LocalTokenValidation;
-using AccelByte.Custom.Guild;
+using AccelByte.Extend.ServiceExtension;
 
 namespace AccelByte.PluginArch.ServiceExtension.Demo.Server
 {
@@ -33,7 +31,7 @@ namespace AccelByte.PluginArch.ServiceExtension.Demo.Server
         {
             string methodName = context.Method.Replace('/', '.').Substring(1);
             MethodDescriptor? methodDesc = null;
-            foreach (var mdItem in GuildService.Descriptor.Methods)
+            foreach (var mdItem in Service.Descriptor.Methods)
             {
                 if (mdItem.FullName == methodName)
                 {
@@ -51,7 +49,7 @@ namespace AccelByte.PluginArch.ServiceExtension.Demo.Server
             if (mOpts.HasExtension(PermissionExtensions.Resource))
                 qPermission = mOpts.GetExtension(PermissionExtensions.Resource);
 
-            Custom.Guild.Action qAction = 0;
+            Extend.ServiceExtension.Action qAction = 0;
             if (mOpts.HasExtension(PermissionExtensions.Action))
                 qAction = mOpts.GetExtension(PermissionExtensions.Action);
 

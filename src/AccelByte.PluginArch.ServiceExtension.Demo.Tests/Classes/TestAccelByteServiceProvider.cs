@@ -2,13 +2,7 @@
 // This is licensed software from AccelByte Inc, for limitations
 // and restrictions contact your company contract manager.
 
-using System;
-using System.Collections.Generic;
-
 using AccelByte.Sdk.Core;
-using AccelByte.Sdk.Api;
-using AccelByte.Sdk.Feature.LocalTokenValidation;
-using AccelByte.Sdk.Feature.AutoTokenRefresh;
 using AccelByte.PluginArch.ServiceExtension.Demo.Server;
 
 namespace AccelByte.PluginArch.ServiceExtension.Demo.Tests

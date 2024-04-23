@@ -2,10 +2,7 @@
 // This is licensed software from AccelByte Inc, for limitations
 // and restrictions contact your company contract manager.
 
-using System;
-using System.Collections.Generic;
 using AccelByte.Sdk.Core;
-using AccelByte.Sdk.Feature.LocalTokenValidation;
 
 namespace AccelByte.PluginArch.ServiceExtension.Demo.Server
 {

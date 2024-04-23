@@ -27,7 +27,7 @@ func NewGateway(ctx context.Context, grpcServerEndpoint string) (*Gateway, error
 		return nil, err
 	}
 
-	if err := pb.RegisterGuildServiceHandler(ctx, mux, conn); err != nil {
+	if err := pb.RegisterServiceHandler(ctx, mux, conn); err != nil {
 		return nil, err
 	}
 

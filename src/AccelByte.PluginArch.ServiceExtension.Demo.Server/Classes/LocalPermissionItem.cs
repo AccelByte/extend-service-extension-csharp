@@ -4,9 +4,6 @@
 
 using System;
 
-using AccelByte.Sdk.Core.Logging;
-using AccelByte.Sdk.Core.Repository;
-
 namespace AccelByte.PluginArch.ServiceExtension.Demo.Server
 {
     public class LocalPermissionItem

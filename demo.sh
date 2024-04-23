@@ -9,7 +9,7 @@ test -n "$AB_CLIENT_SECRET" || (echo "AB_CLIENT_SECRET is not set"; exit 1)
 test -n "$AB_NAMESPACE" || (echo "AB_NAMESPACE is not set"; exit 1)
 
 SERVICE_BASE_URL="${SERVICE_BASE_URL:-http://localhost:8000}"
-SERVICE_BASE_PATH="${SERVICE_BASE_PATH:-guild}"
+SERVICE_BASE_PATH="${SERVICE_BASE_PATH:-service}"
 
 GUILD_ID='63d5802dd554c87f4e0b0707ae2f0af44c6f7d08f1ff3dec21a02728b10476e4'
 

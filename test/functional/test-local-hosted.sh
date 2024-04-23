@@ -7,7 +7,7 @@ set -o pipefail
 #set -x
 
 APP_BASE_URL=http://localhost:8000
-APP_BASE_PATH="guild"
+APP_BASE_PATH="service"
 
 function clean_up()
 {

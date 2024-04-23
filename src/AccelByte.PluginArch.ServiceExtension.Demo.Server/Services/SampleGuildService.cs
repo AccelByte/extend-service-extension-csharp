@@ -3,23 +3,18 @@
 // and restrictions contact your company contract manager.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Configuration;
 
 using Grpc.Core;
-using AccelByte.Custom.Guild;
+using AccelByte.Extend.ServiceExtension;
 using AccelByte.Sdk.Api;
 using AccelByte.PluginArch.ServiceExtension.Demo.Server.Model;
 
 namespace AccelByte.PluginArch.ServiceExtension.Demo.Server.Services
 {
-    public class SampleGuildService : GuildService.GuildServiceBase
+    public class SampleGuildService : Service.ServiceBase
     {
         private readonly ILogger<SampleGuildService> _Logger;
 

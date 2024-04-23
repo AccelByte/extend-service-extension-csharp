@@ -2,11 +2,7 @@
 // This is licensed software from AccelByte Inc, for limitations
 // and restrictions contact your company contract manager.
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 using NUnit.Framework;
@@ -16,11 +12,6 @@ using Microsoft.Extensions.Logging.Abstractions;
 using AccelByte.PluginArch.ServiceExtension.Demo.Server.Services;
 
 using AccelByte.Sdk.Core;
-using AccelByte.Sdk.Api;
-using AccelByte.Sdk.Api.Platform.Operation;
-using AccelByte.Sdk.Api.Platform.Model;
-using AccelByte.Sdk.Core.Util;
-using OpenTelemetry;
 using AccelByte.PluginArch.ServiceExtension.Demo.Server.Model;
 
 namespace AccelByte.PluginArch.ServiceExtension.Demo.Tests
@@ -59,7 +50,7 @@ namespace AccelByte.PluginArch.ServiceExtension.Demo.Tests
                 }
             };
 
-            var createResponse = await service.CreateOrUpdateGuildProgress(new Custom.Guild.CreateOrUpdateGuildProgressRequest()
+            var createResponse = await service.CreateOrUpdateGuildProgress(new Extend.ServiceExtension.CreateOrUpdateGuildProgressRequest()
             {
                 Namespace = adminSdk.Namespace,
                 GuildProgress = data.ToGuildProgressGrpcData()
@@ -75,7 +66,7 @@ namespace AccelByte.PluginArch.ServiceExtension.Demo.Tests
             string guildId = progressData.GuildId;
 
 
-            var getResponse = await service.GetGuildProgress(new Custom.Guild.GetGuildProgressRequest()
+            var getResponse = await service.GetGuildProgress(new Extend.ServiceExtension.GetGuildProgressRequest()
             {
                 Namespace = adminSdk.Namespace,
                 GuildId = guildId

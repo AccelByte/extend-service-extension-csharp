@@ -3,7 +3,6 @@
 // and restrictions contact your company contract manager.
 
 using System;
-using Microsoft.Extensions.Configuration;
 
 using AccelByte.Sdk.Core.Logging;
 using AccelByte.Sdk.Core.Repository;

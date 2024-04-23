@@ -4,18 +4,18 @@
 
 syntax = "proto3";
 
-option csharp_namespace = "AccelByte.Custom.Guild";
-option go_package = "accelbyte.net/custom/guild";
+option csharp_namespace = "AccelByte.Extend.ServiceExtension";
+option go_package = "accelbyte.net/extend/serviceextension";
+option java_package = "net.accelbyte.extend.serviceextension";
 option java_multiple_files = true;
-option java_package = "net.accelbyte.custom.guild";
 
-package accelbyte.custom.guild;
+package service;
 
 import "google/api/annotations.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 import "permission.proto";
 
-service GuildService {
+service Service {
 
   rpc CreateOrUpdateGuildProgress (CreateOrUpdateGuildProgressRequest) returns (CreateOrUpdateGuildProgressResponse) {
     option (permission.action) = CREATE;
@@ -82,12 +82,12 @@ message GuildProgress {
 // OpenAPI options for the entire API.
 option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
   info: {
-    title: "Guild Service API";
+    title: "Service API";
     version: "1.0";
   };
   schemes: HTTP;
   schemes: HTTPS;
-  base_path: "/guild";
+  base_path: "/service";
 
   security_definitions: {
     security: {

@@ -5,7 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using AccelByte.Custom.Guild;
+using AccelByte.Extend.ServiceExtension;
 using AccelByte.Sdk.Api.Cloudsave.Model;
 
 namespace AccelByte.PluginArch.ServiceExtension.Demo.Server.Model

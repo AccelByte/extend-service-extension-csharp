@@ -3,10 +3,10 @@ package permission;
 
 import "google/protobuf/descriptor.proto";
 
-option csharp_namespace = "AccelByte.Custom.Guild";
-option go_package = "accelbyte.net/custom/guild";
+option csharp_namespace = "AccelByte.Extend.ServiceExtension";
+option go_package = "accelbyte.net/extend/serviceextension";
+option java_package = "net.accelbyte.extend.serviceextension";
 option java_multiple_files = true;
-option java_package = "net.accelbyte.custom.guild";
 
 enum Action {
   unknown = 0; // don't use this

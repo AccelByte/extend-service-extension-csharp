@@ -8,10 +8,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 
 using AccelByte.Sdk.Core;
-using AccelByte.Sdk.Api;
-using AccelByte.Sdk.Feature.LocalTokenValidation;
 using AccelByte.Sdk.Feature.AutoTokenRefresh;
-using System.Collections.Generic;
 
 namespace AccelByte.PluginArch.ServiceExtension.Demo.Server
 {
