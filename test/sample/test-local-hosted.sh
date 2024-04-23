@@ -21,8 +21,8 @@ echo '# Build and run Extend app locally'
 (cd gateway && BASE_PATH=/$APP_BASE_PATH go run main.go) & GATEWAY_PID=$!
 (cd src/AccelByte.Extend.ServiceExtension.Server && dotnet run) & SERVICE_PID=$!
 
-(for _ in {1..12}; do bash -c "timeout 1 echo > /dev/tcp/127.0.0.1/8000" 2>/dev/null && exit 0 || sleep 5s; done; exit 1)
-(for _ in {1..12}; do bash -c "timeout 1 echo > /dev/tcp/127.0.0.1/8080" 2>/dev/null && exit 0 || sleep 5s; done; exit 1)
+(for _ in {1..12}; do curl http://localhost:8000 >/dev/null 2>&1 && exit 0 || sleep 5s; done; exit 1)
+(for _ in {1..12}; do curl http://localhost:8080 >/dev/null 2>&1 && exit 0 || sleep 5s; done; exit 1)
 
 if [ $? -ne 0 ]; then
   echo "Failed to run Extend app locally"
