@@ -13,14 +13,14 @@ using AccelByte.Extend.ServiceExtension.Server.Model;
 
 namespace AccelByte.Extend.ServiceExtension.Server.Services
 {
-    public class SampleGuildService : Service.ServiceBase
+    public class MyService : Service.ServiceBase
     {
-        private readonly ILogger<SampleGuildService> _Logger;
+        private readonly ILogger<MyService> _Logger;
 
         private readonly IAccelByteServiceProvider _ABProvider;
 
-        public SampleGuildService(
-            ILogger<SampleGuildService> logger,
+        public MyService(
+            ILogger<MyService> logger,
             IAccelByteServiceProvider abProvider)
         {
             _Logger = logger;

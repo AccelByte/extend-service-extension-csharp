@@ -17,14 +17,14 @@ using AccelByte.Extend.ServiceExtension.Server.Model;
 namespace AccelByte.Extend.ServiceExtension.Server.Tests
 {
     [TestFixture]
-    public class GuildServiceTests
+    public class MyServiceTests
     {
-        private ILogger<SampleGuildService> _ServiceLogger;
+        private ILogger<MyService> _ServiceLogger;
 
-        public GuildServiceTests()
+        public MyServiceTests()
         {
             ILoggerFactory loggerFactory = new NullLoggerFactory();
-            _ServiceLogger = loggerFactory.CreateLogger<SampleGuildService>();
+            _ServiceLogger = loggerFactory.CreateLogger<MyService>();
         }
 
         [Test]
@@ -37,7 +37,7 @@ namespace AccelByte.Extend.ServiceExtension.Server.Tests
                 .Build();
             adminSdk.LoginClient();
 
-            var service = new SampleGuildService(_ServiceLogger, new TestAccelByteServiceProvider(adminSdk));
+            var service = new MyService(_ServiceLogger, new TestAccelByteServiceProvider(adminSdk));
             var callContext = new UnitTestCallContext();
 
             GuildProgressData data = new GuildProgressData()

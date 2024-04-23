@@ -86,7 +86,7 @@ namespace AccelByte.Extend.ServiceExtension.Server
             var app = builder.Build();
             app.UseGrpcMetrics();
 
-            app.MapGrpcService<SampleGuildService>();
+            app.MapGrpcService<MyService>();
             app.MapGrpcReflectionService();
             app.MapGrpcHealthChecksService();
             app.MapMetrics();
