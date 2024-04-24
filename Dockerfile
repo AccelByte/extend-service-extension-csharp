@@ -10,10 +10,11 @@ RUN dotnet publish -c Release -o /output
 
 # gRPC Gateway Gen
 FROM --platform=$BUILDPLATFORM rvolosatovs/protoc:4.1.0 as grpc-gateway-gen
-COPY src /src
-COPY gateway /gateway
-WORKDIR /gateway
-RUN bash gen_gateway.sh
+WORKDIR /build
+COPY gateway gateway
+COPY src src
+COPY proto.sh .
+RUN bash proto.sh
 
 
 # gRPC Gateway Builder
@@ -27,8 +28,8 @@ WORKDIR /build
 COPY gateway/go.mod gateway/go.sum .
 RUN go mod download
 COPY gateway/ .
-RUN rm -rf pkg/pb
-COPY --from=grpc-gateway-gen /gateway/pkg/pb ./pkg/pb
+RUN rm -rf gateway/pkg/pb
+COPY --from=grpc-gateway-gen /build/gateway/pkg/pb ./pkg/pb
 RUN go build -v -o /output/$TARGETOS/$TARGETARCH/grpc_gateway .
 
 
@@ -39,7 +40,7 @@ ARG TARGETARCH
 RUN apk --no-cache add bash
 WORKDIR /app
 COPY --from=grpc-gateway-builder /output/$TARGETOS/$TARGETARCH/grpc_gateway .
-COPY --from=grpc-gateway-gen /gateway/apidocs ./apidocs
+COPY --from=grpc-gateway-gen /build/gateway/apidocs ./apidocs
 COPY gateway/third_party ./third_party
 COPY --from=grpc-server-builder /output/* .
 COPY wrapper.sh .

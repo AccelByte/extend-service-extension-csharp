@@ -10,14 +10,13 @@ BUILDER := grpc-plugin-server-builder
 
 .PHONY: test
 
-gen_gateway:
+proto:
 	docker run -t --rm -u $$(id -u):$$(id -g) \
-		-v $$(pwd)/src:/src \
-		-v $$(pwd)/gateway:/gateway \
-		-w /gateway \
+		-v $$(pwd):/build \
+		-w /build \
 		--entrypoint /bin/bash \
 		rvolosatovs/protoc:4.1.0 \
-			gen_gateway.sh
+			proto.sh
 
 build: build_server build_gateway
 
@@ -36,7 +35,7 @@ build_server:
 			.output/
 
 
-build_gateway: gen_gateway
+build_gateway: proto
 	docker run -t --rm -u $$(id -u):$$(id -g) \
 		-e GOCACHE=/data/.cache/go-cache \
 		-e GOPATH=/data/.cache/go-path \
@@ -60,7 +59,7 @@ run_server:
 		mcr.microsoft.com/dotnet/sdk:$(DOTNETVER) \
 		dotnet run
 
-run_gateway: gen_gateway
+run_gateway: proto
 	docker run -it --rm -u $$(id -u):$$(id -g) \
 		-e GOCACHE=/data/.cache/go-cache \
 		-e GOPATH=/data/.cache/go-path \
