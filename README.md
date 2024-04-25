@@ -89,7 +89,7 @@ data.
       - For `Premium` tier e.g.  https://dev.accelbyte.io
 
    b. [Create a Game Namespace](https://docs.accelbyte.io/gaming-services/tutorials/how-to/create-a-game-namespace/) 
-      if you don't have one yet. Keep the `Namespace ID`.
+      if you don't have one yet. Keep the `Namespace ID`. Make sure this namespace is in active status.
 
 
    c. [Create an OAuth Client](https://docs.accelbyte.io/gaming-services/services/access/authorization/manage-access-control-for-applications/#create-an-iam-client) 
@@ -98,9 +98,11 @@ data.
 
       - For AGS Premium customers:
          - `ADMIN:ROLE [READ]` to validate access token and permissions
-         - `ADMIN:NAMESPACE:{namespace}:CLOUDSAVE:RECORD [CREATE,READ,UPDATE,DELETE]` to create, read, update, and delete cloudsave records
+         - `ADMIN:NAMESPACE:{namespace}:NAMESPACE [READ]` to validate access namespace
+         - `ADMIN:NAMESPACE:{namespace}:CLOUDSAVE:RECORD [CREATE,READ,UPDATE,DELETE]` to create, read, update, and delete cloudsave records         
       - For AGS Starter customers:
          - IAM -> Roles (Read)
+         - Basic -> Namespace (Read)
          - Cloud Save -> Game Records (Create, Read, Update, Delete)
 
 ## Setup
