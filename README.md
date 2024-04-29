@@ -34,15 +34,52 @@ data.
 
 ## Prerequisites
 
-1. Windows 10 WSL2 or Linux Ubuntu 20.04 with the following tools installed.
+1. Windows 11 WSL2 or Linux Ubuntu 22.04 with the following installed.
 
-   a. bash
+   a. Bash
 
-   b. make
+      ```
+      bash --version
 
-   c. [docker v23.x](https://docs.docker.com/engine/install/ubuntu/)
+      GNU bash, version 5.1.16(1)-release (x86_64-pc-linux-gnu)
+      ...
+      ```
 
-   d. .net 6 sdk
+   b. Make
+
+      - To install from Ubuntu repository, run: `sudo apt update && sudo apt install make` 
+
+      ```
+      make --version
+
+      GNU Make 4.3
+      ...
+      ```
+
+   c. Docker (Docker Engine v23.0+)
+
+      - To install from Ubuntu repository, run: `sudo apt update && sudo apt install docker.io`
+      - Add your user to `docker` group: `sudo usermod -aG docker $USER`
+      - Log out and log back in so that the changes take effect
+
+      ```
+      docker version
+
+      ...
+      Server: Docker Desktop
+       Engine:
+        Version:          24.0.5
+      ...
+      ```
+
+   d. .NET 6 SDK
+
+      To install from Ubuntu repository, run `sudo apt-get update && sudo apt-get install -y dotnet-sdk-6.0`
+
+      ```
+      dotnet --version
+      6.0.128
+      ```
 
 2. Access to AGS environment.
 
