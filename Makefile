@@ -5,8 +5,9 @@
 SHELL := /bin/bash
 
 IMAGE_NAME := $(shell basename "$$(pwd)")-app
+BUILDER := extend-builder
+
 DOTNETVER := 6.0
-BUILDER := grpc-plugin-server-builder
 
 .PHONY: test
 
