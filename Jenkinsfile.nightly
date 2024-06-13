@@ -19,7 +19,7 @@ pipeline {
   stages {
     stage('Prepare') {
       agent {
-        label "extend-builder-batch"
+        label "${params.AGENT_LABEL}"
       }
       steps {
         script {
@@ -34,7 +34,7 @@ pipeline {
     }
     stage('Test Sample') {
       agent {
-        label "extend-builder-batch"
+        label "${params.AGENT_LABEL}"
       }
       options {
         lock("justice-demo-serversdktest")
