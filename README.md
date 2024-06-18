@@ -34,7 +34,7 @@ data.
 
 ## Prerequisites
 
-1. Windows 11 WSL2 or Linux Ubuntu 22.04 with the following installed.
+1. Windows 11 WSL2 or Linux Ubuntu 22.04 or macOS 14+ with the following tools installed.
 
    a. Bash
 
@@ -80,6 +80,8 @@ data.
       dotnet --version
       6.0.128
       ```
+
+   > :exclamation: In macOS, you may use [Homebrew](https://brew.sh/) to easily install some of the tools above.
 
 2. Access to AGS environment.
 
@@ -131,7 +133,7 @@ setup steps.
    BASE_PATH='/guild'                        # The base path used for the app
    ```
  
-   > :info: **In this sample app, PLUGIN_GRPC_SERVER_AUTH_ENABLED is `true` by default**: 
+   > :exclamation: **In this sample app, PLUGIN_GRPC_SERVER_AUTH_ENABLED is `true` by default**: 
    If it is set to `false`, the endpoint `permission.action` and 
    `permission.resource` validation will be disabled and the endpoint can be 
    accessed without a valid access token. This option is provided for 
