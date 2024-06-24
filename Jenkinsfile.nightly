@@ -23,6 +23,8 @@ pipeline {
       }
       steps {
         script {
+          OS_NAME = sh(script: "uname -s", returnStdout: true).trim()
+          currentBuild.displayName = "#${env.BUILD_NUMBER} ${OS_NAME}"
           gitRepositoryName = git.getRepositoryName()
           gitCommitHash = git.getCommitHash()
           bitbucketCommitHref = "https://api.bitbucket.org/2.0/repositories/accelbyte/${gitRepositoryName}/commit/${gitCommitHash}"
