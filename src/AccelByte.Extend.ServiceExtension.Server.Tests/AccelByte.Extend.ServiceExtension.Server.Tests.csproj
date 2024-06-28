@@ -7,8 +7,8 @@
   </PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="AccelByte.Sdk" Version="0.54.0" />
-		<PackageReference Include="Grpc.Net.Client" Version="2.55.0" />
+		<PackageReference Include="AccelByte.Sdk" Version="0.63.1" />
+		<PackageReference Include="Grpc.Net.Client" Version="2.63.0" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.3" />
 		<PackageReference Include="NUnit" Version="3.13.3" />
 		<PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
