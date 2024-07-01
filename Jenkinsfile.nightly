@@ -39,7 +39,7 @@ pipeline {
         label "${params.AGENT_LABEL}"
       }
       options {
-        lock("justice-demo-serversdktest")
+        lock("justice-extend-app-test")
       }
       stages {
         stage('Local Hosted') {
