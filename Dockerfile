@@ -1,5 +1,5 @@
 # gRPC Server Builder
-FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:6.0-alpine3.19 as grpc-server-builder
+FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:6.0-alpine3.19 AS grpc-server-builder
 RUN apk update && apk add --no-cache gcompat
 WORKDIR /build
 COPY src/AccelByte.Extend.ServiceExtension.Server/*.csproj .
@@ -9,7 +9,7 @@ RUN dotnet publish -c Release -r linux-musl-x64 -o /output
 
 
 # gRPC Gateway Gen
-FROM --platform=$BUILDPLATFORM rvolosatovs/protoc:4.1.0 as grpc-gateway-gen
+FROM --platform=$BUILDPLATFORM rvolosatovs/protoc:4.1.0 AS grpc-gateway-gen
 WORKDIR /build
 COPY gateway gateway
 COPY src src
@@ -18,7 +18,7 @@ RUN bash proto.sh
 
 
 # gRPC Gateway Builder
-FROM --platform=$BUILDPLATFORM golang:1.20-alpine3.19 as grpc-gateway-builder
+FROM --platform=$BUILDPLATFORM golang:1.20-alpine3.19 AS grpc-gateway-builder
 ARG TARGETOS
 ARG TARGETARCH
 ARG GOOS=$TARGETOS
