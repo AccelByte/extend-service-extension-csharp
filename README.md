@@ -58,7 +58,7 @@ data.
 
    c. Docker (Docker Engine v23.0+)
 
-      - To install from Ubuntu repository, run: `sudo apt update && sudo apt install docker.io`
+      - To install from Ubuntu repository, run: `sudo apt update && sudo apt install docker.io docker-buildx docker-compose-v2`
       - Add your user to `docker` group: `sudo usermod -aG docker $USER`
       - Log out and log back in so that the changes take effect
 
