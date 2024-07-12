@@ -308,12 +308,18 @@ To deploy this app to AGS, follow the steps below.
    corresponding app detail page.
 
 4. Build and push sample app docker image to AccelByte ECR using the following command.
-
+   
    ```
-   make imagex_push IMAGE_TAG=v0.0.1 REPO_URL=xxxxxxxxxx.dkr.ecr.us-west-2.amazonaws.com/accelbyte/justice/development/extend/xxxxxxxxxx/xxxxxxxxxx
+   extend-helper-cli image-upload --work-dir <my-project-dir> --namespace <my-game> --app <my-app> --image-tag v0.0.1
    ```
 
-   > :exclamation: **The REPO_URL is obtained from step 1**: It can be found under 'Repository URI' in the app detail.
+   > :warning: Make sure to perform docker login (step 3) before executing the above command.4. Build and push sample app docker image to AccelByte ECR using the following command.
+   
+   ```
+   extend-helper-cli image-upload --work-dir <my-project-dir> --namespace <my-game> --app <my-app> --image-tag v0.0.1
+   ```
+
+   > :warning: Make sure to perform docker login (step 3) before executing the above command.
 
 5. Open Admin Portal, go to **Extend** -> **Service Extension**. And then select the extend app.
 
