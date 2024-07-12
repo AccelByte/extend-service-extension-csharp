@@ -7,7 +7,7 @@ SHELL := /bin/bash
 IMAGE_NAME := $(shell basename "$$(pwd)")-app
 BUILDER := extend-builder
 
-DOTNETVER := 6.0
+DOTNETVER := 6.0-jammy
 
 TEST_SAMPLE_CONTAINER_NAME := sample-service-extension-test
 
