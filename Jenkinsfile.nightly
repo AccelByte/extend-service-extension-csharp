@@ -14,6 +14,8 @@ bitbucketCredentialsSsh = 'bitbucket-build-extend-ssh'
 
 bitbucketCommitHref = null
 
+jobChannel = env.SLACK_CHANNEL_ACTIVITY_EXTEND_ENGINEERING ? env.SLACK_CHANNEL_ACTIVITY_EXTEND_ENGINEERING : "#activity-extend-engineering"
+
 pipeline {
   agent none
   stages {
@@ -81,7 +83,7 @@ pipeline {
             :no_entry: <${env.BUILD_URL}|${env.JOB_NAME}-${env.BUILD_NUMBER}> *failed*
 
             |""".stripMargin()
-        slackSend(channel: '#activity-extend-engineering', color: '#FF0000', message: message)
+        slackSend(channel: jobChannel, color: '#FF0000', message: message)
       }
     }
   }
