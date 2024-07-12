@@ -57,14 +57,10 @@ echo '# Downloading extend-helper-cli'
 
 case "$(uname -s)" in
     Darwin*)
-      curl -sf https://api.github.com/repos/AccelByte/extend-helper-cli/releases/latest \
-        | grep "/extend-helper-cli-darwin" | cut -d : -f 2,3 | tr -d \" \
-        | curl -sL --output extend-helper-cli $(cat)
+      curl -sL --output extend-helper-cli https://github.com/AccelByte/extend-helper-cli/releases/latest/download/extend-helper-cli-darwin_amd64
         ;;
     *)
-      curl -sf https://api.github.com/repos/AccelByte/extend-helper-cli/releases/latest \
-        | grep "/extend-helper-cli-linux" | cut -d : -f 2,3 | tr -d \" \
-        | curl -sL --output extend-helper-cli $(cat)
+      curl -sL --output extend-helper-cli https://github.com/AccelByte/extend-helper-cli/releases/latest/download/extend-helper-cli-linux_amd64
         ;;
 esac
 
@@ -154,10 +150,11 @@ APP_REPO_URL=$(echo "$APP_DETAILS" | jq -r '.appRepoUrl')
 APP_REPO_HOST=$(echo "$APP_REPO_URL" | cut -d/ -f1)
 APP_BASE_PATH=$(echo "$APP_DETAILS" | jq -r '.basePath')
 
-./extend-helper-cli dockerlogin --namespace $AB_NAMESPACE --app $APP_NAME -p | docker login -u AWS --password-stdin $APP_REPO_HOST
+#./extend-helper-cli dockerlogin --namespace $AB_NAMESPACE --app $APP_NAME -p | docker login -u AWS --password-stdin $APP_REPO_HOST
+./extend-helper-cli dockerlogin --namespace $AB_NAMESPACE --app $APP_NAME --login
 
-#make build
-make imagex_push REPO_URL=$APP_REPO_URL IMAGE_TAG=v0.0.1
+#make imagex_push REPO_URL=$APP_REPO_URL IMAGE_TAG=v0.0.1
+./extend-helper-cli image-upload --namespace $AB_NAMESPACE --app $APP_NAME --image-tag v0.0.1
 
 echo "Deploying Extend app ..."
 
