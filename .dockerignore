@@ -2,6 +2,7 @@ Dockerfile
 Makefile
 pkg/pb
 .cache/
+.tmp/
 src/*/bin
 src/*/obj
 src/.vs
