@@ -146,8 +146,6 @@ if [ "$(cat api_curl_http_code.out)" -ge "400" ]; then
   exit 1
 fi
 
-APP_REPO_URL=$(echo "$APP_DETAILS" | jq -r '.appRepoUrl')
-APP_REPO_HOST=$(echo "$APP_REPO_URL" | cut -d/ -f1)
 APP_BASE_PATH=$(echo "$APP_DETAILS" | jq -r '.basePath')
 
 #./extend-helper-cli dockerlogin --namespace $AB_NAMESPACE --app $APP_NAME -p | docker login -u AWS --password-stdin $APP_REPO_HOST
