@@ -87,22 +87,20 @@ data.
 
    a. Base URL:
 
-      - For `Starter` tier e.g.  https://spaceshooter.prod.gamingservices.accelbyte.io
-      - For `Premium` tier e.g.  https://dev.accelbyte.io
+      - Sample URL for AGS Shared Cloud customers: `https://spaceshooter.prod.gamingservices.accelbyte.io`
+      - Sample URL for AGS Private Cloud customers:  `https://dev.accelbyte.io`
 
-   b. [Create a Game Namespace](https://docs.accelbyte.io/gaming-services/tutorials/how-to/create-a-game-namespace/) 
-      if you don't have one yet. Keep the `Namespace ID`. Make sure this namespace is in active status.
-
+   b. [Create a Game Namespace](https://docs.accelbyte.io/gaming-services/tutorials/how-to/create-a-game-namespace/) if you don't have one yet. Keep the `Namespace ID`. Make sure this namespace is in active status.
 
    c. [Create an OAuth Client](https://docs.accelbyte.io/gaming-services/services/access/authorization/manage-access-control-for-applications/#create-an-iam-client) 
       with confidential client type with the following permissions. Keep the 
       `Client ID` and `Client Secret`.
 
-      - For AGS Premium customers:
+      - For AGS Private Cloud customers:
          - `ADMIN:ROLE [READ]` to validate access token and permissions
          - `ADMIN:NAMESPACE:{namespace}:NAMESPACE [READ]` to validate access namespace
          - `ADMIN:NAMESPACE:{namespace}:CLOUDSAVE:RECORD [CREATE,READ,UPDATE,DELETE]` to create, read, update, and delete cloudsave records         
-      - For AGS Starter customers:
+      - For AGS Shared Cloud customers:
          - IAM -> Roles (Read)
          - Basic -> Namespace (Read)
          - Cloud Save -> Game Records (Create, Read, Update, Delete)
