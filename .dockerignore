@@ -6,3 +6,4 @@ pkg/pb
 src/*/bin
 src/*/obj
 src/.vs
+.vs
