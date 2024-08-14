@@ -17,12 +17,11 @@ bitbucketCommitHref = null
 jobChannel = env.SLACK_CHANNEL_ACTIVITY_EXTEND_ENGINEERING ? env.SLACK_CHANNEL_ACTIVITY_EXTEND_ENGINEERING : "#activity-extend-engineering"
 
 pipeline {
-  agent none
+  agent {
+    label "${params.AGENT_LABEL}"
+  }
   stages {
     stage('Prepare') {
-      agent {
-        label "${params.AGENT_LABEL}"
-      }
       steps {
         script {
           OS_NAME = sh(script: "uname -s", returnStdout: true).trim()
@@ -37,9 +36,6 @@ pipeline {
       }
     }
     stage('Test Sample') {
-      agent {
-        label "${params.AGENT_LABEL}"
-      }
       options {
         lock("justice-extend-app-test")
       }
