@@ -1,6 +1,8 @@
-# Extend Service Extension Sample App .NET (C#)
+# Extend Service Extension App .NET (C#)
 
-This repository contains a custom service that will be used as a sample for testing Extend Service Extension.
+
+This guide shows how the example guild service included in this project template 
+was created.
 
 To make the guide more realistic it will be written by taking the game studios perspective when needing to implement their specific feature to cater their requirement. 
 
