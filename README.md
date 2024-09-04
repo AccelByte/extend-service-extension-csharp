@@ -357,5 +357,4 @@ For more information on how to deploy an `Extend Service Extension` app, see
 
 ## Next Step
 
-Proceed to modify this project template and create your own endpoints. See 
-[here](./docs/0-toc.md) for more details.
+Proceed to create your own `Extend Service Extension` app by modifying this project. See [here](https://docs.accelbyte.io/gaming-services/services/extend/service-extension/customize-service-extension-app/) for more details.
