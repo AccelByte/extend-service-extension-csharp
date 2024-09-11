@@ -3,7 +3,7 @@
 ```mermaid
 flowchart LR
    CL[Game Client]
-   subgraph "Extend Service Extension App (you are here)"
+   subgraph "Extend Service Ext. App"
    GW["gRPC Gateway"]
    SV["gRPC Server"]
    end
