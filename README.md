@@ -12,9 +12,9 @@ flowchart LR
 ```
 
 `AccelByte Gaming Services` (AGS) capabilities can be enhanced using 
-`Extend Service Extension` apps. An `Extend Service Extension` app is a 
-REST API service built using a combination of 
-[gRPC Server and gRPC Gateway](https://github.com/grpc-ecosystem/grpc-gateway?tab=readme-ov-file#about).
+`Extend Service Extension` apps. An `Extend Service Extension` app is a RESTful 
+web service created using a stack that includes a `gRPC Server` and the 
+[gRPC Gateway](https://github.com/grpc-ecosystem/grpc-gateway?tab=readme-ov-file#about).
 
 ## Overview
 
