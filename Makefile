@@ -141,3 +141,13 @@ endif
 			$(DARGS) \
 			$(TEST_SAMPLE_CONTAINER_NAME) \
 			bash ./test/sample/test-accelbyte-hosted.sh
+
+test_docs_broken_links:
+	@test -n "$(SDK_MD_CRAWLER_PATH)" || (echo "SDK_MD_CRAWLER_PATH is not set" ; exit 1)
+	rm -f test.err
+	bash "$(SDK_MD_CRAWLER_PATH)/md-crawler.sh" \
+			-i README.md
+	(for FILE in $$(find docs -type f); do \
+			(set -o pipefail; DOCKER_SKIP_BUILD=1 bash "$(SDK_MD_CRAWLER_PATH)/md-crawler.sh" -i $$FILE) || touch test.err; \
+	done)
+	[ ! -f test.err ]
