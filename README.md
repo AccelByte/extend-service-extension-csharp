@@ -174,7 +174,7 @@ To be able to run this app, you will need to follow these setup steps.
    compared to `.env` file variables**: If the variables in `.env` file do not 
    seem to take effect properly, check if there are host OS environment 
    variables with the same name. See documentation about 
-   [docker compose environment variables precedence](https://docs.docker.com/compose/environment-variables/envvars-precedence/) 
+   [docker compose environment variables precedence](https://docs.docker.com/compose/how-tos/environment-variables/envvars-precedence/) 
    for more details.
 
 2. Fill in the required environment variables in `.env` file as shown below.
