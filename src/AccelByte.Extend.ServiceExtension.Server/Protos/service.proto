@@ -85,8 +85,6 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
     title: "Service API";
     version: "1.0";
   };
-  schemes: HTTP;
-  schemes: HTTPS;
   base_path: "/service";
 
   security_definitions: {
