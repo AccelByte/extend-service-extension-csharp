@@ -90,7 +90,7 @@ imagex_push:
 	docker buildx build -t ${REPO_URL}:${IMAGE_TAG} --platform linux/amd64 --push .
 	docker buildx rm --keep-state $(BUILDER)
 
-test:
+test_with_env:
 	@test -n "$(ENV_FILE_PATH)" || (echo "ENV_FILE_PATH is not set" ; exit 1)
 	docker run --rm -u $$(id -u):$$(id -g) \
 		-v $$(pwd):/data/ \

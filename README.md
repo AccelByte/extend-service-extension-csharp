@@ -246,7 +246,7 @@ AB_NAMESPACE='xxxxxxxxxx'                    # Namespace ID from the Prerequisit
 Then run this command.
 
 ```shell
-make test ENV_FILE_PATH=<your env var file>
+make test_with_env ENV_FILE_PATH=<your env var file>
 ```
 
 ### Test in Local Development Environment
