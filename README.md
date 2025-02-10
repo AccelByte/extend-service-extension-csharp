@@ -259,23 +259,30 @@ This app can be tested locally through the Swagger UI.
    docker compose up --build
    ```
 
-2. If **PLUGIN_GRPC_SERVER_AUTH_ENABLED** is `true`: Get access token to 
-   be able to access the REST API service. You can generate the user access 
-   token using [getusertoken.sh](getusertoken.sh) shell script. To run it, you
-   will need to set the following environment variables.
+2. If **PLUGIN_GRPC_SERVER_AUTH_ENABLED** is `true`: Get an access token to 
+   be able to access the REST API service. 
+   
+   To get a user access access token, you can use
+   [get-user-access-token.postman_collection.json](get-user-access-token.postman_collection.json).
+   Import the Postman collection to your Postman workspace and create a 
+   Postman environment containing the following variables.
 
-   ```shell
-   export AB_BASE_URL='http://test.accelbyte.io'    # Your environment's domain Base URL
-   export AB_CLIENT_ID='xxxxxxxxxx'                 # Client ID from the Prerequisites section
-   export AB_CLIENT_SECRET='xxxxxxxxxx'             # Client Secret from the Prerequisites section
-   ```
+   - `AB_BASE_URL` For example, https://test.accelbyte.io
+   - `AB_CLIENT_ID` A confidential IAM OAuth client ID
+   - `AB_CLIENT_SECRET` The corresponding confidential IAM OAuth client secret
+   - `AB_USERNAME` The username or e-mail of the user
+   - `AB_PASSWORD` The corresponding user password
 
-   Then use the following command to run the script to get the user access 
-   token.
+   To get the user access token, open the `POST get-user-access-token` request in this 
+   collection and click `Send`. If successful, you will get a `200 OK` response and 
+   the user access token will be available in access_token property in the response 
+   body. In the example below, the user token is `eyJhbGciOi...`.
 
-   ```shell
-   # The <username> and <password> are the user's credential to access AGS.
-   bash getusertoken.sh <username> <password>
+   ```json
+   {
+      "access_token": "eyJhbGciOi...",
+      ...
+   }
    ```
 
    > :info: Make sure the user has a role which contains this permission: 
@@ -295,7 +302,7 @@ This app can be tested locally through the Swagger UI.
 
    ![swagger-interface](./docs/images/swagger-authorize.png)
 
-   Popup will show, input "Bearer <user's access token>" in `Value` field for 
+   Popup will show, input "Bearer <user access token>" in `Value` field for 
    `Bearer (apiKey)`. Then click "Authorize" to save the user's access token.
 
 ### Test Observability
