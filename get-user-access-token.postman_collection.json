@@ -1,0 +1,72 @@
+{
+	"info": {
+		"_postman_id": "a7bf0ab0-297f-4f49-80df-0956388efcf3",
+		"name": "get-user-access-token",
+		"description": "# Prerequisites\n\nThis `collection` requires an `environment` with the following variables.\n\n- `AB_BASE_URL` For example, [https://test.accelbyte.io](https://test.accelbyte.io)\n    \n- `AB_CLIENT_ID` A confidential IAM OAuth client ID\n    \n- `AB_CLIENT_SECRET` The corresponding confidential IAM OAuth client secret\n    \n- `AB_USERNAME` The username or e-mail of the user\n    \n- `AB_PASSWORD` The corresponding user password\n    \n\n# Instruction\n\nTo get the user access token, open the `POST get-user-access-token` request in this `collection` and click `Send`. If successful, you will get a `200 OK` response and the user token will be available in `access_token` property in the response body. In the example below, the user token is `eyJhbGciOi...`.\n\n``` json\n{\n    \"access_token\": \"eyJhbGciOi...\",\n    ...\n}\n\n ```\n\n# Tips\n\nYou can use [https://jwt.io](https://jwt.io) to decode the user access token. For example, to check the token namespace, roles, and permissions.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "16846723"
+	},
+	"item": [
+		{
+			"name": "get-user-access-token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"followRedirects": false
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": {
+						"password": "{{AB_CLIENT_SECRET}}",
+						"username": "{{AB_CLIENT_ID}}"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "{{AB_USERNAME}}",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "{{AB_PASSWORD}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": "{{AB_BASE_URL}}/iam/v3/oauth/token"
+			},
+			"response": []
+		}
+	]
+}
