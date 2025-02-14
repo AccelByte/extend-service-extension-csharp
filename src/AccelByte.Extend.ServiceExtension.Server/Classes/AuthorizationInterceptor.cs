@@ -1,9 +1,10 @@
-﻿// Copyright (c) 2022-2024 AccelByte Inc. All Rights Reserved.
+﻿// Copyright (c) 2022-2025 AccelByte Inc. All Rights Reserved.
 // This is licensed software from AccelByte Inc, for limitations
 // and restrictions contact your company contract manager.
 
 using System;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 using Microsoft.Extensions.Logging;
 
@@ -61,6 +62,7 @@ namespace AccelByte.Extend.ServiceExtension.Server
                 if (authParts.Length != 2)
                     throw new RpcException(new Status(StatusCode.InvalidArgument, "Invalid authorization token format"));
 
+                qPermission = (new Regex(@"\{(namespace|NAMESPACE)\}")).Replace(qPermission, (m) => _ABProvider.Sdk.Namespace);
                 int actNum = (int)qAction;
                 bool b = _ABProvider.Sdk.ValidateToken(authParts[1], qPermission, actNum);
                 if (!b)
