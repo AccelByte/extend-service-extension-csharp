@@ -266,30 +266,22 @@ This app can be tested locally through the Swagger UI.
 2. If **PLUGIN_GRPC_SERVER_AUTH_ENABLED** is `true`: Get an access token to 
    be able to access the REST API service. 
    
-   To get a user access access token, you can use
-   [get-user-access-token.postman_collection.json](get-user-access-token.postman_collection.json).
+   To get an access token, you can use [demo/get-access-token.postman_collection.json](get-access-token.postman_collection.json) in demo folder.
    Import the Postman collection to your Postman workspace and create a 
    Postman environment containing the following variables.
 
    - `AB_BASE_URL` For example, https://test.accelbyte.io
    - `AB_CLIENT_ID` A confidential IAM OAuth client ID
    - `AB_CLIENT_SECRET` The corresponding confidential IAM OAuth client secret
-   - `AB_USERNAME` The username or e-mail of the user
-   - `AB_PASSWORD` The corresponding user password
+   - `AB_USERNAME` The username or e-mail of the user (for user token)
+   - `AB_PASSWORD` The corresponding user password (for user token)
 
-   To get the user access token, open the `POST get-user-access-token` request in this 
-   collection and click `Send`. If successful, you will get a `200 OK` response and 
-   the user access token will be available in access_token property in the response 
-   body. In the example below, the user token is `eyJhbGciOi...`.
+   Inside the postman collection, use `get-client-access-token` request to get client token or use `get-user-access-token` request to get user access token.
 
-   ```json
-   {
-      "access_token": "eyJhbGciOi...",
-      ...
-   }
-   ```
-
-   > :info: Make sure the user has a role which contains this permission: 
+   > :info: When using client access token, make sure the IAM client has following permission: 
+   `ADMIN:NAMESPACE:{namespace}:CLOUDSAVE:RECORD [CREATE,READ,UPDATE,DELETE]`.
+   
+   > :info: When using user access token, make sure the user has a role which contains following permission:
    `ADMIN:NAMESPACE:{namespace}:CLOUDSAVE:RECORD [CREATE,READ,UPDATE,DELETE]`.
 
 3. The REST API service can then be tested by opening Swagger UI at 

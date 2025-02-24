@@ -1,0 +1,224 @@
+{
+	"info": {
+		"_postman_id": "a026afb5-3457-42fa-90fa-e5361e4a4c07",
+		"name": "Extend Service Extension Demo",
+		"description": "This `collection` requires an `environment` with the following variables.\n\n- `AB_BASE_URL`\n    \n- `AB_NAMESPACE`\n    \n- `AB_CLIENT_ID`\n    \n- `AB_CLIENT_SECRET`\n    \n- `EXTEND_APP_SERVICE_URL`\n    \n\nYou will need following permissions for the IAM Client.  \nFor AGS Private Cloud customers:\n\n- `ADMIN:ROLE [READ]`\n    \n- `ADMIN:NAMESPACE:{namespace}:NAMESPACE [READ]`\n    \n- `ADMIN:NAMESPACE:{namespace}:CLOUDSAVE:RECORD [CREATE,READ,UPDATE,DELETE]`\n    \n\nFor AGS Shared Cloud customers:\n\n- IAM > Roles (Read)\n    \n- Basic > Namespace (Read)\n    \n- Cloud Save > Game Records (Create, Read, Update, and Delete)  \n    \n\nMake sure you have deployed Extend Service Extension app. Get `EXTEND_APP_SERVICE_URL` from extend app page in admin portal. For local deployment, use local url instead.\n\nPlease read [getting started with Extend Service Extension](https://docs.accelbyte.io/gaming-services/services/extend/service-extension/getting-started-service-extension/) for more information.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19336018"
+	},
+	"item": [
+		{
+			"name": "10-client-login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Store client access token in collection variable\", function () {\r",
+							"    var responseJson = pm.response.json();\r",
+							"    \r",
+							"    if (responseJson.access_token !== undefined) {\r",
+							"        pm.collectionVariables.set('CLIENT_ACCESS_TOKEN', responseJson.access_token)\r",
+							"    }\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{AB_CLIENT_SECRET}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{AB_CLIENT_ID}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "client_credentials",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{AB_BASE_URL}}/iam/v3/oauth/token",
+					"host": [
+						"{{AB_BASE_URL}}"
+					],
+					"path": [
+						"iam",
+						"v3",
+						"oauth",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "20-update-guild-progress",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{CLIENT_ACCESS_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"guildProgress\": {\r\n    \"guildId\": \"{{TEST_GUILD_ID}}\",\r\n    \"namespace\": \"{{AB_NAMESPACE}}\",\r\n    \"objectives\": {\r\n      \"additionalProp1\": 0,\r\n      \"additionalProp2\": 10,\r\n      \"additionalProp3\": 20\r\n    }\r\n  }\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{EXTEND_APP_SERVICE_URL}}/v1/admin/namespace/{{AB_NAMESPACE}}/progress",
+					"host": [
+						"{{EXTEND_APP_SERVICE_URL}}"
+					],
+					"path": [
+						"v1",
+						"admin",
+						"namespace",
+						"{{AB_NAMESPACE}}",
+						"progress"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "30-read-guild-progress",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{CLIENT_ACCESS_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{EXTEND_APP_SERVICE_URL}}/v1/admin/namespace/{{AB_NAMESPACE}}/progress/{{TEST_GUILD_ID}}",
+					"host": [
+						"{{EXTEND_APP_SERVICE_URL}}"
+					],
+					"path": [
+						"v1",
+						"admin",
+						"namespace",
+						"{{AB_NAMESPACE}}",
+						"progress",
+						"{{TEST_GUILD_ID}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "CLIENT_ACCESS_TOKEN",
+			"value": ""
+		},
+		{
+			"key": "TEST_GUILD_ID",
+			"value": "test-12345-test",
+			"type": "string"
+		}
+	]
+}

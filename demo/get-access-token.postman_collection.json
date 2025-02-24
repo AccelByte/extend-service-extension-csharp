@@ -1,0 +1,182 @@
+{
+	"info": {
+		"_postman_id": "dab97de2-2c6a-47ca-88cb-4c1e3eedb594",
+		"name": "Get Access Token",
+		"description": "# Prerequisites\n\nThis `collection` requires an `environment` with the following variables.\n\n- `AB_BASE_URL` For example, [https://test.accelbyte.io](https://test.accelbyte.io)\n    \n- `AB_CLIENT_ID` A confidential IAM OAuth client ID\n    \n- `AB_CLIENT_SECRET` The corresponding confidential IAM OAuth client secret\n    \n- `AB_USERNAME` User's username \\[only for get user token\\]\n    \n- `AB_PASSWORD` User's password \\[only for get user token\\]\n    \n\n# Instruction\n\nTo get the client access token, open the `POST get-client-access-token` request in this `collection` and click `Send`. If successful, you will get a `200 OK` response and the token will be available in `access_token` property in the response body. In the example below, the token is `eyJhbGciOi...`.\n\n``` json\n{\n    \"access_token\": \"eyJhbGciOi...\",\n    ...\n}\n\n ```\n\nTo get user access token, open the `POST get-user-access-token` request in this `collection` and click `Send`. If successful, you will get a `200 OK` response and the token will be available in `access_token` property in the response body similar to above.\n\n# Tips\n\nYou can use [https://jwt.io](https://jwt.io) to decode the client access token. For example, to check the token namespace, roles, and permissions.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19336018"
+	},
+	"item": [
+		{
+			"name": "get-client-access-token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Store client access token in collection variable\", function () {\r",
+							"    var responseJson = pm.response.json();\r",
+							"    \r",
+							"    if (responseJson.access_token !== undefined) {\r",
+							"        pm.collectionVariables.set('CLIENT_ACCESS_TOKEN', responseJson.access_token)\r",
+							"    }\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{AB_CLIENT_SECRET}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{AB_CLIENT_ID}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "client_credentials",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{AB_BASE_URL}}/iam/v3/oauth/token",
+					"host": [
+						"{{AB_BASE_URL}}"
+					],
+					"path": [
+						"iam",
+						"v3",
+						"oauth",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-user-access-token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Store user access token in collection variable\", function () {\r",
+							"    var responseJson = pm.response.json();\r",
+							"    \r",
+							"    if (responseJson.access_token !== undefined) {\r",
+							"        pm.collectionVariables.set('USER_ACCESS_TOKEN', responseJson.access_token)\r",
+							"    }\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{AB_CLIENT_SECRET}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{AB_CLIENT_ID}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "{{AB_USERNAME}}",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "{{AB_PASSWORD}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{AB_BASE_URL}}/iam/v3/oauth/token",
+					"host": [
+						"{{AB_BASE_URL}}"
+					],
+					"path": [
+						"iam",
+						"v3",
+						"oauth",
+						"token"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "CLIENT_ACCESS_TOKEN",
+			"value": ""
+		},
+		{
+			"key": "USER_ACCESS_TOKEN",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
