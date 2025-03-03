@@ -266,7 +266,7 @@ This app can be tested locally through the Swagger UI.
 2. If **PLUGIN_GRPC_SERVER_AUTH_ENABLED** is `true`: Get an access token to 
    be able to access the REST API service. 
    
-   To get an access token, you can use [demo/get-access-token.postman_collection.json](get-access-token.postman_collection.json) in demo folder.
+   To get an access token, you can use [get-access-token.postman_collection.json](demo/get-access-token.postman_collection.json) in demo folder.
    Import the Postman collection to your Postman workspace and create a 
    Postman environment containing the following variables.
 
