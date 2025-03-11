@@ -2,7 +2,7 @@
 
 ./AccelByte.Extend.ServiceExtension.Server &
 
-./grpc_gateway &
+./grpc-gateway &
 
 wait -n
 
