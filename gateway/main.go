@@ -24,6 +24,7 @@ import (
 	"github.com/golang/glog"
 	"github.com/sirupsen/logrus"
 	"golang.org/x/net/context"
+	"syscall"
 )
 
 var (
@@ -141,6 +142,8 @@ func main() {
 	logrus.Infof("grpc server started")
     logrus.Infof("app server started on base path: " + common.BasePath)
 
-	ctx, _ = signal.NotifyContext(ctx, os.Interrupt)
+	ctx, stop := signal.NotifyContext(ctx, os.Interrupt, syscall.SIGTERM)
+	defer stop()
 	<-ctx.Done()
+	logrus.Infof("signal received")
 }
