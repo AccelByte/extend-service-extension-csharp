@@ -44,7 +44,7 @@ build_gateway: proto
 		-e GOPATH=/data/.cache/go-path \
 		-v $$(pwd):/data \
 		-w /data/gateway \
-		golang:1.20-alpine3.19 \
+		golang:1.24 \
 		go build -modcacherw -o grpc_gateway
 
 run_server:

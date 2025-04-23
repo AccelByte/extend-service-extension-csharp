@@ -29,7 +29,7 @@ func GetEnvInt(key string, fallback int) int {
 	return val
 }
 
-func getBasePath() string {
+func GetBasePath() string {
 	basePath := os.Getenv("BASE_PATH")
 	if basePath == "" {
 		logrus.Fatalf("BASE_PATH envar is not set or empty")

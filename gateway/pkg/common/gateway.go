@@ -17,9 +17,10 @@ import (
 
 type Gateway struct {
 	mux *runtime.ServeMux
+	basePath string
 }
 
-func NewGateway(ctx context.Context, grpcServerEndpoint string) (*Gateway, error) {
+func NewGateway(ctx context.Context, grpcServerEndpoint string, basePath string) (*Gateway, error) {
 	mux := runtime.NewServeMux()
 	
 	conn, err := grpc.DialContext(ctx, grpcServerEndpoint, grpc.WithInsecure(), grpc.WithUnaryInterceptor(otelgrpc.UnaryClientInterceptor()))
@@ -33,11 +34,12 @@ func NewGateway(ctx context.Context, grpcServerEndpoint string) (*Gateway, error
 
 	return &Gateway{
 		mux: mux,
+		basePath: basePath,
 	}, nil
 }
 
 func (g *Gateway) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	// Strip the base path, since the base_path configuration in protofile won't actually do the routing
 	// Reference: https://github.com/grpc-ecosystem/grpc-gateway/pull/919/commits/1c34df861cfc0d6cb19ea617921d7d9eaa209977
-	http.StripPrefix(BasePath, g.mux).ServeHTTP(w, r)
+	http.StripPrefix(g.basePath, g.mux).ServeHTTP(w, r)
 }
