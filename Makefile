@@ -89,12 +89,3 @@ imagex_push:
 	docker buildx inspect $(BUILDER) || docker buildx create --name $(BUILDER) --use
 	docker buildx build -t ${REPO_URL}:${IMAGE_TAG} --platform linux/amd64 --push .
 	docker buildx rm --keep-state $(BUILDER)
-
-test_with_env:
-	@test -n "$(ENV_FILE_PATH)" || (echo "ENV_FILE_PATH is not set" ; exit 1)
-	docker run --rm -u $$(id -u):$$(id -g) \
-		-v $$(pwd):/data/ \
-		-e HOME="/data/.cache" -e DOTNET_CLI_HOME="/data/.cache" \
-		--env-file $(ENV_FILE_PATH) \
-		mcr.microsoft.com/dotnet/sdk:$(DOTNETVER) \
-		sh -c "mkdir -p /data/.tmp && cp -r /data/src /data/.tmp/src && cd /data/.tmp/src && dotnet test && rm -rf /data/.tmp"
