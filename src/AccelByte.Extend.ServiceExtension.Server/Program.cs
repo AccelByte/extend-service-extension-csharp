@@ -1,4 +1,4 @@
-// Copyright (c) 2023 AccelByte Inc. All Rights Reserved.
+// Copyright (c) 2023-2025 AccelByte Inc. All Rights Reserved.
 // This is licensed software from AccelByte Inc, for limitations
 // and restrictions contact your company contract manager.
 
@@ -27,9 +27,16 @@ namespace AccelByte.Extend.ServiceExtension.Server
         public static int Main(string[] args)
         {
             OpenTelemetry.Sdk.SetDefaultTextMapPropagator(new B3Propagator());
+
+            string? appServiceName = Environment.GetEnvironmentVariable("OTEL_SERVICE_NAME");
+            if (appServiceName == null)
+                appServiceName = "extend-app-service-extension";
+            else
+                appServiceName = $"extend-app-{appServiceName.Trim().ToLower()}";
+
             Metrics.DefaultRegistry.SetStaticLabels(new Dictionary<string, string>()
             {
-                { "application", "service_ext_demo_grpcserver" }
+                { "application", appServiceName }
             });
 
             var builder = WebApplication.CreateBuilder(args);
@@ -41,7 +48,7 @@ namespace AccelByte.Extend.ServiceExtension.Server
 
             string? appResourceName = Environment.GetEnvironmentVariable("APP_RESOURCE_NAME");
             if (appResourceName == null)
-                appResourceName = "ExtendServiceExtensionGrpcServer";
+                appResourceName = "SERVICEEXTENSIONEXTENDAPP";
 
             bool enableAuthorization = builder.Configuration.GetValue<bool>("EnableAuthorization");
             string? strEnableAuth = Environment.GetEnvironmentVariable("PLUGIN_GRPC_SERVER_AUTH_ENABLED");
@@ -61,7 +68,7 @@ namespace AccelByte.Extend.ServiceExtension.Server
                     traceConfig
                         .AddSource(appResourceName)
                         .SetResourceBuilder(ResourceBuilder.CreateDefault()
-                            .AddService(appResourceName, null, version)
+                            .AddService(appServiceName, null, version)
                             .AddTelemetrySdk())
                         .AddZipkinExporter()
                         .AddHttpClientInstrumentation()
