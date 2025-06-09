@@ -341,45 +341,33 @@ will be accessible at http://localhost:3000.
 
 ## Deploying
 
-To deploy this app to AGS, follow the steps below.
+After completing testing, the next step is to deploy your app to `AccelByte Gaming Services`.
 
-1. [Create a new Extend Service Extension App on Admin Portal](https://docs.accelbyte.io/gaming-services/services/extend/service-extension/getting-started-service-extension/#register-and-integrate-custom-service-to-extend-service-extension). 
-   Keep the `Repository URI`.
+1. **Create an Extend Service Extension app**
 
-2. Download and setup [extend-helper-cli](https://github.com/AccelByte/extend-helper-cli/) 
-   (only if it has not been done previously).
+   If you do not already have one, create a new [Extend Service Extension App](https://docs.accelbyte.io/gaming-services/services/extend/service-extension/getting-started-service-extension/#create-the-extend-app).
 
-3. Perform docker login with `extend-helper-cli` using the following command.
+   On the **App Detail** page, take note of the following values.
+   - `Namespace`
+   - `App Name`
+
+2. **Build and Push the Container Image**
+
+   Use [extend-helper-cli](https://github.com/AccelByte/extend-helper-cli) to build and upload the container image.
 
    ```
-   extend-helper-cli dockerlogin --namespace <my-game> --app <my-app> --login
+   extend-helper-cli image-upload --login --namespace <namespace> --app <app-name> --image-tag v0.0.1
    ```
 
-   > :exclamation: For your convenience, the above `extend-helper-cli` command 
-   can also be copied from `Repository Authentication Command` under the 
-   corresponding app detail page.
+   > :warning: Run this command from your project directory. If you are in a different directory, add the `--work-dir <project-dir>` option to specify the correct path.
 
-4. Build and push this app docker image to AccelByte ECR using the following command.
+3. **Deploy the Image**
    
-   ```
-   extend-helper-cli image-upload --work-dir <my-project-dir> --namespace <my-game> --app <my-app> --image-tag v0.0.1
-   ```
-
-   > :warning: Make sure to perform docker login (step 3) before executing the above command.
-
-5. Open Admin Portal, go to **Extend** -> **Service Extension**. And then select the extend app.
-
-6. To deploy selected image tag, click **Image Version History** and select 
-   desired image tag to be deployed.
-
-7. Click **Deploy Image**, confirm the deployment and go back to App Detail by 
-   clicking **Cancel**.
-
-8. Wait until app status is running.
-
-For more information on how to deploy an `Extend Service Extension` app, see 
-[here](https://docs.accelbyte.io/gaming-services/services/extend/service-extension/getting-started-service-extension/#build-and-upload-the-extend-app).
+   On the **App Detail** page:
+   - Click **Image Version History**
+   - Select the image you just pushed
+   - Click **Deploy Image**
 
 ## Next Step
 
-Proceed to create your own `Extend Service Extension` app by modifying this project. See [here](https://docs.accelbyte.io/gaming-services/services/extend/service-extension/customize-service-extension-app/) for more details.
+Proceed by modifying this `Extend Service Extension` app template to implement your own custom logic. For more details, see [here](https://docs.accelbyte.io/gaming-services/services/extend/service-extension/customize-service-extension-app/).
