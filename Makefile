@@ -66,5 +66,5 @@ run_gateway: proto
 		-w /data/gateway \
 		-p 8000:8000 \
 		--add-host host.docker.internal:host-gateway \
-		golang:1.20-alpine3.19 \
+		golang:1.24 \
 		go run main.go --grpc-addr host.docker.internal:6565
