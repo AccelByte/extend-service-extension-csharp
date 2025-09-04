@@ -64,9 +64,20 @@ namespace AccelByte.Extend.ServiceExtension.Server
 
                 qPermission = (new Regex(@"\{(namespace|NAMESPACE)\}")).Replace(qPermission, (m) => _ABProvider.Sdk.Namespace);
                 int actNum = (int)qAction;
-                bool b = _ABProvider.Sdk.ValidateToken(authParts[1], qPermission, actNum);
-                if (!b)
-                    throw new RpcException(new Status(StatusCode.PermissionDenied, $"Permission {qPermission} [{qAction}] is required."));                
+
+                if (!string.IsNullOrEmpty(qPermission) && actNum > 0)
+                {
+                    bool b = _ABProvider.Sdk.ValidateToken(authParts[1], qPermission, actNum);
+                    if (!b)
+                        throw new RpcException(new Status(StatusCode.PermissionDenied, $"Valid access token with permission {qPermission} [{qAction}] is required."));
+
+                }
+                else
+                {
+                    bool b = _ABProvider.Sdk.ValidateToken(authParts[1]);
+                    if (!b)
+                        throw new RpcException(new Status(StatusCode.PermissionDenied, $"Valid access token is required."));
+                } 
             }
             catch (RpcException)
             {
