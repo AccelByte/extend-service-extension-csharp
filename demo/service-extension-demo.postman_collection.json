@@ -1,10 +1,10 @@
 {
 	"info": {
-		"_postman_id": "a026afb5-3457-42fa-90fa-e5361e4a4c07",
+		"_postman_id": "03d4e82f-3150-4ed9-b036-874d1bd0844f",
 		"name": "Extend Service Extension Demo",
 		"description": "This `collection` requires an `environment` with the following variables.\n\n- `AB_BASE_URL`\n    \n- `AB_NAMESPACE`\n    \n- `AB_CLIENT_ID`\n    \n- `AB_CLIENT_SECRET`\n    \n- `EXTEND_APP_SERVICE_URL`\n    \n\nYou will need following permissions for the IAM Client.  \nFor AGS Private Cloud customers:\n\n- `ADMIN:ROLE [READ]`\n    \n- `ADMIN:NAMESPACE:{namespace}:NAMESPACE [READ]`\n    \n- `ADMIN:NAMESPACE:{namespace}:CLOUDSAVE:RECORD [CREATE,READ,UPDATE,DELETE]`\n    \n\nFor AGS Shared Cloud customers:\n\n- IAM > Roles (Read)\n    \n- Basic > Namespace (Read)\n    \n- Cloud Save > Game Records (Create, Read, Update, and Delete)  \n    \n\nMake sure you have deployed Extend Service Extension app. Get `EXTEND_APP_SERVICE_URL` from extend app page in admin portal. For local deployment, use local url instead.\n\nPlease read [getting started with Extend Service Extension](https://docs.accelbyte.io/gaming-services/services/extend/service-extension/getting-started-service-extension/) for more information.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "19336018"
+		"_exporter_id": "16846723"
 	},
 	"item": [
 		{
@@ -78,7 +78,9 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							""
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -140,7 +142,9 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							""
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
 						],
 						"type": "text/javascript",
 						"packages": {}
