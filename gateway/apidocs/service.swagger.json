@@ -10,10 +10,6 @@
     }
   ],
   "basePath": "/service",
-  "schemes": [
-    "http",
-    "https"
-  ],
   "consumes": [
     "application/json"
   ],
