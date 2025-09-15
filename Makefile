@@ -29,10 +29,11 @@ build_server:
 	mkdir -p .output
 	cp -r src .tmp/
 	docker run -t --rm -u $$(id -u):$$(id -g) \
-		-e HOME="/data/.cache" \
-		-e DOTNET_CLI_HOME="/data/.cache" \
+		-e HOME="/tmp/build-cache/dotnet/cache" \
+		-e DOTNET_CLI_HOME="/tmp/build-cache/dotnet/cache" \
 		-e DOTNET_SKIP_WORKLOAD_INTEGRITY_CHECK=1 \
 		-v $$(pwd):/data \
+		-v $(BUILD_CACHE_VOLUME):/tmp/build-cache \
 		-w /data/.tmp \
 		${DOTNET_IMAGE} \
 		dotnet build
@@ -59,10 +60,11 @@ run_server:
 	mkdir -p .output
 	cp -r src .tmp/
 	docker run --rm -it -u $$(id -u):$$(id -g) \
-		-e HOME="/data/.cache" \
-		-e DOTNET_CLI_HOME="/data/.cache" \
+		-e HOME="/tmp/build-cache/dotnet/cache" \
+		-e DOTNET_CLI_HOME="/tmp/build-cache/dotnet/cache" \
 		-e DOTNET_SKIP_WORKLOAD_INTEGRITY_CHECK=1 \
 		--env-file .env \
+		-v $(BUILD_CACHE_VOLUME):/tmp/build-cache \
 		-v $$(pwd):/data \
 		-w /data/.tmp/AccelByte.Extend.ServiceExtension.Server \
 		-p 6565:6565 \
