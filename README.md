@@ -119,11 +119,11 @@ Customizing your Extend Service Extension app involves modifying the `service.pr
          ...
          ```
 
-   d. .NET 6 SDK
+   d. .NET 8 SDK
 
       - On Linux Ubuntu:
 
-         To install from the Ubuntu repository, run `sudo apt-get update && sudo apt-get install -y dotnet-sdk-6.0`.
+         To install from the Ubuntu repository, run `sudo apt-get update && sudo apt-get install -y dotnet-sdk-8.0`.
 
       - On Windows or macOS:
 
@@ -132,7 +132,7 @@ Customizing your Extend Service Extension app involves modifying the `service.pr
          ```
          dotnet --version
          
-         6.0.128
+         8.0.119
          ```
 
    e. [Postman](https://www.postman.com/)

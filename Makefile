@@ -5,7 +5,7 @@
 SHELL := /bin/bash
 
 PROJECT_NAME := $(shell basename "$$(pwd)")
-DOTNET_IMAGE := mcr.microsoft.com/dotnet/sdk:6.0-jammy
+DOTNET_IMAGE := mcr.microsoft.com/dotnet/sdk:8.0-jammy
 GOLANG_IMAGE := golang:1.24-alpine3.21
 PROTOC_IMAGE := rvolosatovs/protoc:4.1.0
 
@@ -31,6 +31,7 @@ build_server:
 	docker run -t --rm -u $$(id -u):$$(id -g) \
 		-e HOME="/data/.cache" \
 		-e DOTNET_CLI_HOME="/data/.cache" \
+		-e DOTNET_SKIP_WORKLOAD_INTEGRITY_CHECK=1 \
 		-v $$(pwd):/data \
 		-w /data/.tmp \
 		${DOTNET_IMAGE} \
@@ -60,6 +61,7 @@ run_server:
 	docker run --rm -it -u $$(id -u):$$(id -g) \
 		-e HOME="/data/.cache" \
 		-e DOTNET_CLI_HOME="/data/.cache" \
+		-e DOTNET_SKIP_WORKLOAD_INTEGRITY_CHECK=1 \
 		--env-file .env \
 		-v $$(pwd):/data \
 		-w /data/.tmp/AccelByte.Extend.ServiceExtension.Server \
