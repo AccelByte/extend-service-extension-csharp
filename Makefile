@@ -25,20 +25,15 @@ proto:
 		proto.sh
 
 build_server:
-	rm -rf .output .tmp
-	mkdir -p .output
-	cp -r src .tmp/
 	docker run -t --rm -u $$(id -u):$$(id -g) \
 		-e HOME="/tmp/build-cache/dotnet/cache" \
 		-e DOTNET_CLI_HOME="/tmp/build-cache/dotnet/cache" \
 		-e DOTNET_SKIP_WORKLOAD_INTEGRITY_CHECK=1 \
 		-v $$(pwd):/data \
 		-v $(BUILD_CACHE_VOLUME):/tmp/build-cache \
-		-w /data/.tmp \
+		-w /data/src \
 		${DOTNET_IMAGE} \
 		dotnet build
-	cp -r .tmp/AccelByte.Extend.ServiceExtension.Server/bin/* \
-			.output/
 
 
 build_gateway: proto
@@ -56,9 +51,6 @@ build_gateway: proto
 			go build -modcacherw -o grpc_gateway
 
 run_server:
-	rm -rf .output .tmp
-	mkdir -p .output
-	cp -r src .tmp/
 	docker run --rm -it -u $$(id -u):$$(id -g) \
 		-e HOME="/tmp/build-cache/dotnet/cache" \
 		-e DOTNET_CLI_HOME="/tmp/build-cache/dotnet/cache" \
@@ -66,7 +58,7 @@ run_server:
 		--env-file .env \
 		-v $(BUILD_CACHE_VOLUME):/tmp/build-cache \
 		-v $$(pwd):/data \
-		-w /data/.tmp/AccelByte.Extend.ServiceExtension.Server \
+		-w /data/src/AccelByte.Extend.ServiceExtension.Server \
 		-p 6565:6565 \
 		-p 8080:8080 \
 		${DOTNET_IMAGE} \
