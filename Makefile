@@ -6,7 +6,7 @@ SHELL := /bin/bash
 
 PROJECT_NAME := $(shell basename "$$(pwd)")
 DOTNET_IMAGE := mcr.microsoft.com/dotnet/sdk:8.0-jammy
-GOLANG_IMAGE := golang:1.24-alpine3.21
+GOLANG_IMAGE := golang:1.24-alpine3.22
 PROTOC_IMAGE := rvolosatovs/protoc:4.1.0
 
 BUILD_CACHE_VOLUME := $(shell echo '$(PROJECT_NAME)' | sed 's/[^a-zA-Z0-9_-]//g')-build-cache

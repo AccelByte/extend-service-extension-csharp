@@ -9,7 +9,7 @@ RUN bash proto.sh
 
 # gRPC server builder
 
-FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0-alpine3.19 AS grpc-server-builder
+FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0-alpine3.22 AS grpc-server-builder
 ARG TARGETARCH
 RUN apk update && apk add --no-cache gcompat
 WORKDIR /project
@@ -21,7 +21,7 @@ RUN dotnet publish -c Release -r $(cat /tmp/dotnet-rid) --no-restore -o /build/
 
 # gRPC gateway builder
 
-FROM --platform=$BUILDPLATFORM golang:1.24-alpine3.21 AS grpc-gateway-builder
+FROM --platform=$BUILDPLATFORM golang:1.24-alpine3.22 AS grpc-gateway-builder
 ARG TARGETARCH
 WORKDIR /build
 COPY gateway/go.mod gateway/go.sum .
@@ -33,7 +33,7 @@ RUN GOARCH=$TARGETARCH go build -o grpc-gateway .
 
 # Extend Service Extension app
 
-FROM mcr.microsoft.com/dotnet/aspnet:8.0-alpine3.19
+FROM mcr.microsoft.com/dotnet/aspnet:8.0-alpine3.22
 WORKDIR /app
 COPY --from=grpc-gateway-builder /build/grpc-gateway .
 COPY --from=grpc-gateway-gen /build/gateway/apidocs ./apidocs
