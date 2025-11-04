@@ -1,3 +1,9 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json"
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "packageRules": [
+    {
+      "matchPackageNames": ["mcr.microsoft.com/dotnet/aspnet", "mcr.microsoft.com/dotnet/sdk"],
+      "allowedVersions": "<9.0"
+    }
+  ]
 }
