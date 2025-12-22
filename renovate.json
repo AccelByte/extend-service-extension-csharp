@@ -2,8 +2,16 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "packageRules": [
     {
+      "matchPackageNames": ["golang"],
+      "allowedVersions": "<=1.24"
+    },
+    {
       "matchPackageNames": ["mcr.microsoft.com/dotnet/aspnet", "mcr.microsoft.com/dotnet/sdk"],
       "allowedVersions": "<9.0"
+    },
+    {
+      "matchPackageNames": ["rvolosatovs/protoc"],
+      "allowedVersions": "<=4.1.0"
     }
   ]
 }
