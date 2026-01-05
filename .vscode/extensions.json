@@ -1,0 +1,42 @@
+{
+  // Recommended extensions for this repository
+  "recommendations": [
+    // Editor
+    "ms-vscode-remote.remote-containers", // Dev Containers: run VS Code in a containerized environment
+    "GitHub.copilot",                     // Provides inline coding suggestions as you type
+    "GitHub.copilot-chat",                // A companion extension that provides conversational AI assistance
+
+    // Environment
+    "mikestead.dotenv", // dotenv file syntax highlighting and validation
+
+    // Git
+    "eamodio.gitlens", // Advanced Git insights, blame, history, comparisons
+
+    // Config files
+    "ms-vscode.vscode-json",     // JSON syntax highlighting, validation, formatting
+    "redhat.vscode-yaml",        // YAML syntax highlighting, validation, formatting
+
+    // Build & scripts
+    "ms-vscode.makefile-tools", // Makefile IntelliSense and targets UI
+    "timonwong.shellcheck",     // Shell script static analysis (sh, bash, zsh)
+
+    // Containers
+    "ms-azuretools.vscode-docker", // Dockerfile/docker-compose authoring, images/containers management
+
+    // Docs
+    "bierner.markdown-mermaid", // Mermaid diagrams in Markdown files
+
+    // C# / .NET Core: runtime/debugging, language server
+    "ms-dotnettools.csharp",     // C# extension (debugging, testing, IntelliSense)
+    "ms-dotnettools.csdevkit",   // C# Dev Kit (full IDE experience, solution management)
+
+    // Go
+    "golang.go", // Official Go tools (gopls, linting, tests, debug)
+
+    // Protocol Buffers / gRPC
+    "zxh404.vscode-proto3" // Syntax highlighting and linting for .proto files
+  ],
+
+  // Extensions explicitly not recommended (optional; none for now)
+  "unwantedRecommendations": []
+}

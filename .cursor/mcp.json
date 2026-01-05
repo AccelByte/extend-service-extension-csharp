@@ -1,0 +1,27 @@
+{
+  "mcpServers": {
+    "extend-sdk": {
+      "command": "docker",
+      "args": [
+        "run",
+        "--rm",
+        "--interactive",
+        "--env", "TRANSPORT=stdio",
+        "--env", "CONFIG_DIR=config/csharp",
+        "ghcr.io/accelbyte/ags-extend-sdk-mcp-server:2025.9.1"
+      ]
+    },
+    "ags-api": {
+      "command": "docker",
+      "args": [
+        "run",
+        "--rm",
+        "--interactive",
+        "--env", "AB_BASE_URL",
+        "--env", "OAUTH_CLIENT_ID",
+        "--env", "OAUTH_CLIENT_SECRET",
+        "ghcr.io/accelbyte/ags-api-mcp-server:2025.9.0"
+      ]
+    }
+  }
+}

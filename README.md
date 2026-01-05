@@ -31,7 +31,7 @@ endpoints.
 
 ## Project Structure
 
-Customizing your Extend Service Extension app involves modifying the `service.proto` and `MyService.cs` files. The app initializes key components, such as the gRPC server, in `Program.cs`. When a request is made to the RESTful endpoint, the gRPC gateway handles it and forwards it to the corresponding gRPC method. Before `myService.cs` executes any custom logic based on the request, the `authServerInterceptor.cs` first verifies that the request has the necessary access token and authorization. No other files need to be modified unless you require further customization.
+Customizing your Extend Service Extension app involves modifying the `service.proto` and `MyService.cs` files. The app initializes key components, such as the gRPC server, in `Program.cs`. When a request is made to the RESTful endpoint, the gRPC gateway handles it and forwards it to the corresponding gRPC method. Before `MyService.cs` executes any custom logic based on the request, the `AuthorizationInterceptor.cs` first verifies that the request has the necessary access token and authorization. No other files need to be modified unless you require further customization.
 
 ```shell
 .
@@ -195,7 +195,7 @@ To be able to run this app, you will need to follow these setup steps.
    > :exclamation: **In this app, PLUGIN_GRPC_SERVER_AUTH_ENABLED is `true` by default**: If it is set to `false`, the endpoint `permission.action` and `permission.resource`  validation will be disabled and the endpoint can be accessed without a valid access token. This option is provided for development purpose only.
    
    For more options, create 
-   `src/AccelByte.PluginArch.ServiceExtension.Demo.Server/appsettings.Development.json` 
+   `src/AccelByte.Extend.ServiceExtension.Server/appsettings.Development.json` 
    and fill in the required configuration.
 
    ```json
@@ -234,22 +234,6 @@ docker compose up --build
 ```
 
 ## Testing
-
-### Unit Test
-
-The unit test for the example included in this project is available in `src/AccelByte.Extend.ServiceExtension.Server.Tests`. To run the test, you'll need to fill the env var file mentioned below,
-```
-AB_BASE_URL='http://test.accelbyte.io'       # Your environment's domain Base URL
-AB_CLIENT_ID='xxxxxxxxxx'                    # Client ID from the Prerequisites section
-AB_CLIENT_SECRET='xxxxxxxxxx'                # Client Secret from the Prerequisites section
-AB_NAMESPACE='xxxxxxxxxx'                    # Namespace ID from the Prerequisites section
-```
-
-Then run this command.
-
-```shell
-make test_with_env ENV_FILE_PATH=<your env var file>
-```
 
 ### Test in Local Development Environment
 
@@ -301,9 +285,7 @@ This app can be tested locally through the Swagger UI.
 
 ### Test Observability
 
-To be able to see the how the observability works in this template project in
-local development environment, there are few things that need be setup before 
-performing test.
+To be able to see the how the observability works in this sample app locally, there are few things that need be setup before performing tests.
 
 1. Uncomment loki logging driver in [docker-compose.yaml](docker-compose.yaml)
 

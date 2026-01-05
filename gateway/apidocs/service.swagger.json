@@ -48,12 +48,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "type": "object",
-              "properties": {
-                "guildProgress": {
-                  "$ref": "#/definitions/serviceGuildProgress"
-                }
-              }
+              "$ref": "#/definitions/ServiceCreateOrUpdateGuildProgressBody"
             }
           }
         ],
@@ -112,6 +107,14 @@
     }
   },
   "definitions": {
+    "ServiceCreateOrUpdateGuildProgressBody": {
+      "type": "object",
+      "properties": {
+        "guildProgress": {
+          "$ref": "#/definitions/serviceGuildProgress"
+        }
+      }
+    },
     "protobufAny": {
       "type": "object",
       "properties": {

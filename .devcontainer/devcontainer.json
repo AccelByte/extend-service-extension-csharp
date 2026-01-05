@@ -1,0 +1,89 @@
+{
+  "name": "AccelByte Extend Service Extension",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "workspaceFolder": "/workspace",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
+  // Configure VS Code extensions and settings
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        // Editor
+        "GitHub.copilot",      // Provides inline coding suggestions as you type
+        "GitHub.copilot-chat", // A companion extension that provides conversational AI assistance
+
+        // Environment
+        "mikestead.dotenv", // dotenv file syntax highlighting and validation
+
+        // Git
+        "eamodio.gitlens", // Advanced Git insights, blame, history, comparisons
+
+        // Config files
+        "ms-vscode.vscode-json", // JSON syntax highlighting, validation, formatting
+        "redhat.vscode-yaml",    // YAML syntax highlighting, validation, formatting
+
+        // Build & scripts
+        "ms-vscode.makefile-tools", // Makefile IntelliSense and targets UI
+        "timonwong.shellcheck",     // Shell script static analysis (sh, bash, zsh)
+
+        // Containers
+        "ms-azuretools.vscode-docker", // Dockerfile/docker-compose authoring, images/containers management
+
+        // C# / .NET Core: runtime/debugging, language server
+        "ms-dotnettools.csharp",     // C# extension (debugging, testing, IntelliSense)
+        "ms-dotnettools.csdevkit",   // C# Dev Kit (full IDE experience, solution management)
+
+        // Go
+        "golang.go", // Official Go tools (gopls, linting, tests, debug)
+
+        // Protocol Buffers / gRPC
+        "zxh404.vscode-proto3" // Syntax highlighting and linting for .proto files
+      ],
+      "settings": {
+        "dotnet.defaultSolution": "src/extend-service-extension-server.sln",
+        "go.toolsManagement.checkForUpdates": "local",
+        "go.useLanguageServer": true,
+        "go.gopath": "/go",
+        "go.goroot": "/usr/local/go",
+        "terminal.integrated.defaultProfile.linux": "bash"
+      },
+      "mcp": {
+        "servers": {}
+      }
+    }
+  },
+  // Install common utilities
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": false,
+      "username": "vscode"
+    },
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
+  },
+  // Run setup script after container creation
+  "postCreateCommand": ".devcontainer/post-create.sh",
+  // Forward these ports from container to host
+  "forwardPorts": [
+    6565,
+    8000,
+    8080
+  ],
+  "portsAttributes": {
+    "6565": {
+      "label": "gRPC Server",
+      "onAutoForward": "notify"
+    },
+    "8000": {
+      "label": "gRPC Gateway",
+      "onAutoForward": "notify"
+    },
+    "8080": {
+      "label": "Prometheus Metrics",
+      "onAutoForward": "notify"
+    }
+  },
+  // Run as non-root user for security
+  "remoteUser": "vscode"
+}

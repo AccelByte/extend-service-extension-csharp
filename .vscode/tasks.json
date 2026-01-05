@@ -1,0 +1,232 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build: App",
+      "type": "shell",
+      "command": "dotnet",
+      "args": [
+        "build",
+        "${workspaceFolder}/src/extend-service-extension-server.sln",
+        "/property:GenerateFullPaths=true",
+        "/consoleloggerparameters:NoSummary"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "Run: App",
+      "type": "shell",
+      "command": "dotnet",
+      "args": [
+        "run",
+        "--project",
+        "${workspaceFolder}/src/AccelByte.Extend.ServiceExtension.Server/AccelByte.Extend.ServiceExtension.Server.csproj"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}/src/AccelByte.Extend.ServiceExtension.Server",
+        "env": {
+          "DOTNET_ENVIRONMENT": "Development"
+        }
+      },
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "Run: Gateway",
+      "type": "shell",
+      "command": "go",
+      "args": [
+        "run",
+        "."
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}/gateway",
+        "env": {
+          "BASE_PATH": "${input:basePath}"
+        }
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Run: App and Gateway",
+      "dependsOn": [
+        "Run: Gateway",
+        "Run: App"
+      ],
+      "dependsOrder": "parallel"
+    },
+    {
+      "label": "Proto: Generate",
+      "type": "shell",
+      "command": "${workspaceFolder}/proto.sh",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Format (dotnet format)",
+      "type": "shell",
+      "command": "dotnet",
+      "args": [
+        "format",
+        "${workspaceFolder}/src/extend-service-extension-server.sln",
+        "--include",
+        "${input:path}"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Create .env File",
+      "type": "shell",
+      "command":  "fillenv",
+      "args": [
+        "${workspaceFolder}/.env.template"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Extend: Login to Docker",
+      "type": "shell",
+      "command":  "extend-helper-cli",
+      "args": [
+        "dockerlogin",
+        "--namespace", "${input:appNamespace}",
+        "--app", "${input:appName}",
+        "--login"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Extend: Create App",
+      "type": "shell",
+      "command":  "extend-helper-cli",
+      "args": [
+        "create-app",
+        "--namespace", "${input:appNamespace}",
+        "--app", "${input:appName}",
+        "--scenario", "${input:appScenario}",
+        "--confirm",
+        "--wait"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Extend: Build and Upload Image",
+      "type": "shell",
+      "command":  "extend-helper-cli",
+      "args": [
+        "image-upload",
+        "--namespace", "${input:appNamespace}",
+        "--app", "${input:appName}",
+        "--image-tag", "${input:appImageTag}",
+        "--work-dir", "${workspaceFolder}",
+        "--retry-limit", "3"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Extend: Deploy",
+      "type": "shell",
+      "command":  "extend-helper-cli",
+      "args": [
+        "deploy-app",
+        "--namespace", "${input:appNamespace}",
+        "--app", "${input:appName}",
+        "--image-tag", "${input:appImageTag}",
+        "--wait"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Extend: Start App",
+      "type": "shell",
+      "command":  "extend-helper-cli",
+      "args": [
+        "start-app",
+        "--namespace", "${input:appNamespace}",
+        "--app", "${input:appName}",
+        "--wait"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Extend: Stop App",
+      "type": "shell",
+      "command":  "extend-helper-cli",
+      "args": [
+        "stop-app",
+        "--namespace", "${input:appNamespace}",
+        "--app", "${input:appName}",
+        "--wait"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    }
+  ],
+  "inputs": [
+    {
+      "id": "path",
+      "type": "promptString",
+      "description": "Target path",
+      "default": "src"
+    },
+    {
+      "id": "basePath",
+      "type": "promptString",
+      "description": "Gateway BASE_PATH env",
+      "default": "/service"
+    },
+    {
+      "id": "appNamespace",
+      "type": "promptString",
+      "description": "Namespace"
+    },
+    {
+      "id": "appName",
+      "type": "promptString",
+      "description": "App Name"
+    },
+    {
+      "id": "appScenario",
+      "type": "pickString",
+      "description": "Scenario",
+      "options": [
+        "event-handler",
+        "function-override",
+        "service-extension"
+      ]
+    },
+    {
+      "id": "appImageTag",
+      "type": "promptString",
+      "description": "Image Tag",
+      "default": "v0.1.0"
+    }
+  ]
+}
