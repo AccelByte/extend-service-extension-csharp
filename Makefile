@@ -9,24 +9,32 @@ DOTNET_IMAGE := mcr.microsoft.com/dotnet/sdk:8.0-jammy
 GOLANG_IMAGE := golang:1.24-alpine3.21
 PROTOC_IMAGE := proto-builder
 
+IS_INSIDE_DEVCONTAINER := $(REMOTE_CONTAINERS)
 BUILD_CACHE_VOLUME := $(shell echo '$(PROJECT_NAME)' | sed 's/[^a-zA-Z0-9_-]//g')-build-cache
 
-.PHONY: build proto_image proto build_server build_gateway run_server run_gateway prepare_build_cache
+.PHONY: build
 
 build: build_server build_gateway
 
 proto_image:
+ifneq ($(IS_INSIDE_DEVCONTAINER),true)
 	docker build --target proto-builder -t $(PROTOC_IMAGE) .
+endif
 
 proto: proto_image
+ifneq ($(IS_INSIDE_DEVCONTAINER),true)
 	docker run --tty --rm --user $$(id -u):$$(id -g) \
 		--volume $$(pwd):/build \
 		--workdir /build \
 		--entrypoint /bin/bash \
 		$(PROTOC_IMAGE) \
 		proto.sh
+else
+	./proto.sh
+endif
 
 build_server: proto prepare_build_cache
+ifneq ($(IS_INSIDE_DEVCONTAINER),true)
 	docker run -t --rm -u $$(id -u):$$(id -g) \
 		-e HOME="/tmp/build-cache/dotnet/cache" \
 		-e DOTNET_CLI_HOME="/tmp/build-cache/dotnet/cache" \
@@ -36,8 +44,12 @@ build_server: proto prepare_build_cache
 		-w /data/src \
 		${DOTNET_IMAGE} \
 		dotnet build
+else
+	cd src && dotnet build
+endif
 
 build_gateway: proto
+ifneq ($(IS_INSIDE_DEVCONTAINER),true)
 	docker run -t --rm \
 			-v $(BUILD_CACHE_VOLUME):/tmp/build-cache \
 			$(GOLANG_IMAGE) \
@@ -50,8 +62,12 @@ build_gateway: proto
 			-w /data/gateway \
 			${GOLANG_IMAGE} \
 			go build -modcacherw -o grpc_gateway
+else
+	cd gateway && go build -modcacherw -o grpc_gateway
+endif
 
 run_server: prepare_build_cache
+ifneq ($(IS_INSIDE_DEVCONTAINER),true)
 	docker run --rm -it -u $$(id -u):$$(id -g) \
 		-e HOME="/tmp/build-cache/dotnet/cache" \
 		-e DOTNET_CLI_HOME="/tmp/build-cache/dotnet/cache" \
@@ -64,8 +80,12 @@ run_server: prepare_build_cache
 		-p 8080:8080 \
 		${DOTNET_IMAGE} \
 		dotnet run
+else
+	cd src/AccelByte.Extend.ServiceExtension.Server && dotnet run
+endif
 
 run_gateway: proto
+ifneq ($(IS_INSIDE_DEVCONTAINER),true)
 	docker run -t --rm \
 			-v $(BUILD_CACHE_VOLUME):/tmp/build-cache \
 			$(GOLANG_IMAGE) \
@@ -81,9 +101,14 @@ run_gateway: proto
 			--add-host host.docker.internal:host-gateway \
 			${GOLANG_IMAGE} \
 			go run main.go --grpc-addr host.docker.internal:6565
+else
+	cd gateway && go run main.go --grpc-addr localhost:6565
+endif
 
 prepare_build_cache:
+ifneq ($(IS_INSIDE_DEVCONTAINER),true)
 	docker run -t --rm \
 			-v $(BUILD_CACHE_VOLUME):/tmp/build-cache \
 			busybox:1.37.0 \
 			chown $$(id -u):$$(id -g) /tmp/build-cache		# Fix /tmp/build-cache folder owned by root
+endif
