@@ -17,16 +17,9 @@
         // Environment
         "mikestead.dotenv", // dotenv file syntax highlighting and validation
 
-        // Git
-        "eamodio.gitlens", // Advanced Git insights, blame, history, comparisons
-
         // Config files
         "ms-vscode.vscode-json", // JSON syntax highlighting, validation, formatting
         "redhat.vscode-yaml",    // YAML syntax highlighting, validation, formatting
-
-        // Build & scripts
-        "ms-vscode.makefile-tools", // Makefile IntelliSense and targets UI
-        "timonwong.shellcheck",     // Shell script static analysis (sh, bash, zsh)
 
         // Containers
         "ms-azuretools.vscode-docker", // Dockerfile/docker-compose authoring, images/containers management
