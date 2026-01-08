@@ -33,7 +33,7 @@ else
 	./proto.sh
 endif
 
-build_server: proto prepare_build_cache
+build_server: prepare_build_cache proto
 ifneq ($(IS_INSIDE_DEVCONTAINER),true)
 	docker run -t --rm -u $$(id -u):$$(id -g) \
 		-e HOME="/tmp/build-cache/dotnet/cache" \
@@ -48,7 +48,7 @@ else
 	cd src && dotnet build
 endif
 
-build_gateway: proto
+build_gateway: prepare_build_cache proto
 ifneq ($(IS_INSIDE_DEVCONTAINER),true)
 	docker run -t --rm \
 			-v $(BUILD_CACHE_VOLUME):/tmp/build-cache \
@@ -84,12 +84,8 @@ else
 	cd src/AccelByte.Extend.ServiceExtension.Server && dotnet run
 endif
 
-run_gateway: proto
+run_gateway: prepare_build_cache proto
 ifneq ($(IS_INSIDE_DEVCONTAINER),true)
-	docker run -t --rm \
-			-v $(BUILD_CACHE_VOLUME):/tmp/build-cache \
-			$(GOLANG_IMAGE) \
-			chown $$(id -u):$$(id -g) /tmp/build-cache		# Fix /tmp/build-cache folder owned by root
 	docker run -it --rm -u $$(id -u):$$(id -g) \
 			-e GOCACHE=/tmp/build-cache/go/cache \
 			-e GOMODCACHE=/tmp/build-cache/go/modcache \
