@@ -12,6 +12,10 @@
     {
       "matchPackageNames": ["rvolosatovs/protoc"],
       "allowedVersions": "<=4.1.0"
-    }
+    },
+    {
+      "matchPackageNames": ["ubuntu"],
+      "allowedVersions": "<=22.04"
+    }    
   ]
 }
