@@ -32,7 +32,7 @@ namespace AccelByte.Extend.ServiceExtension.Server
             if (appServiceName == null)
                 appServiceName = "extend-app-service-extension";
             else
-                appServiceName = $"extend-app-{appServiceName.Trim().ToLower()}";
+                appServiceName = $"extend-app-se-{appServiceName.Trim().ToLower()}";
 
             Metrics.DefaultRegistry.SetStaticLabels(new Dictionary<string, string>()
             {
