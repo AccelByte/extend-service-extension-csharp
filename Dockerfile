@@ -60,8 +60,8 @@ ENV PATH=$GOPATH/bin:$GOROOT/bin:$PATH
 # Install protoc Go tools and plugins
 RUN go install -v google.golang.org/protobuf/cmd/protoc-gen-go@latest \
     && go install -v google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest \
-    && go install -v github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway@latest \
-    && go install -v github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2@latest
+    && go install -v github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway@v2.26.3 \
+    && go install -v github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2@v2.26.3
 
 # Set working directory.
 WORKDIR /build
