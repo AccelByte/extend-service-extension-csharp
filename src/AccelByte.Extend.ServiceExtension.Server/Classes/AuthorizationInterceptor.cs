@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2022-2025 AccelByte Inc. All Rights Reserved.
+﻿// Copyright (c) 2022-2026 AccelByte Inc. All Rights Reserved.
 // This is licensed software from AccelByte Inc, for limitations
 // and restrictions contact your company contract manager.
 
@@ -373,13 +373,11 @@ namespace AccelByte.Extend.ServiceExtension.Server
             {
                 MethodOptions mOpts = methodDesc.GetOptions();
 
-                string qPermission = "";
                 if (mOpts.HasExtension(PermissionExtensions.Resource))
-                    qPermission = mOpts.GetExtension(PermissionExtensions.Resource);
+                    permission = mOpts.GetExtension(PermissionExtensions.Resource);
 
-                Extend.ServiceExtension.Action qAction = 0;
                 if (mOpts.HasExtension(PermissionExtensions.Action))
-                    qAction = mOpts.GetExtension(PermissionExtensions.Action);
+                    action = (int)mOpts.GetExtension(PermissionExtensions.Action);
 
                 if (mOpts.HasExtension(AnnotationsExtensions.Openapiv2Operation))
                 {
