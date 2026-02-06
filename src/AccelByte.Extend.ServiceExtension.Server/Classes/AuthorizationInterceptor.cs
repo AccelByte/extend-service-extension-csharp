@@ -16,6 +16,8 @@ using Google.Protobuf.Reflection;
 
 using AccelByte.Sdk.Core;
 using AccelByte.Sdk.Feature.LocalTokenValidation;
+using Grpc.Gateway.ProtocGenOpenapiv2.Options;
+using Microsoft.Extensions.Primitives;
 
 namespace AccelByte.Extend.ServiceExtension.Server
 {
@@ -74,55 +76,6 @@ namespace AccelByte.Extend.ServiceExtension.Server
             // DO NOT REMOVE unless you want infrastructure failures!
             return method.StartsWith("/grpc.reflection.") || 
                    method.StartsWith("/grpc.health.");
-        }
-
-        private MethodDescriptor? FindMethodDescriptor(string fullMethod)
-        {
-            var parts = fullMethod.TrimStart('/').Split('/');
-            if (parts.Length != 2) return null;
-
-            string serviceFullName = parts[0];
-            string methodName = parts[1];
-
-            if (string.IsNullOrEmpty(serviceFullName) || string.IsNullOrEmpty(methodName)) return null;
-
-            string serviceName = serviceFullName.Contains('.') 
-                ? serviceFullName.Substring(serviceFullName.LastIndexOf('.') + 1)
-                : serviceFullName;
-
-            if (string.IsNullOrEmpty(serviceName)) return null;
-
-            if (CachedReflectionType == null) return null;
-
-            if (CachedDescriptorProperty == null) return null;
-
-            FileDescriptor? descriptor;
-            try
-            {
-                descriptor = CachedDescriptorProperty.GetValue(null) as FileDescriptor;
-            }
-            catch (Exception ex)
-            {
-                _Logger.LogWarning(ex, "Failed to get FileDescriptor from reflection type");
-                return null;
-            }
-            
-            if (descriptor?.Services == null) return null;
-
-            var matchingServices = descriptor.Services
-                .Where(s => s.Name == serviceName)
-                .ToList();
-
-            if (matchingServices.Count == 0) return null;
-
-            if (matchingServices.Count > 1)
-            {
-                _Logger.LogWarning("Multiple services found with name '{ServiceName}' ({Count} matches). Using first match.", 
-                    serviceName, matchingServices.Count);
-            }
-
-            var serviceDesc = matchingServices[0];
-            return serviceDesc.Methods.FirstOrDefault(m => m.Name == methodName);
         }
 
         private static Type? FindExtensionClass(string className, ILogger<AuthorizationInterceptor>? logger)
@@ -375,145 +328,6 @@ namespace AccelByte.Extend.ServiceExtension.Server
             _Logger.LogInformation("Reflection cache initialization complete");
         }
 
-        private bool HasBearerSecurity(MethodOptions methodOptions)
-        {
-            try
-            {
-                var extensionField = CachedOpenapiv2OperationExtension;
-                if (extensionField == null) return false;
-
-                var hasExtensionMethod = CachedHasExtensionForOpenapi;
-                if (hasExtensionMethod == null) return false;
-
-                bool hasExtension;
-                try { hasExtension = (bool)hasExtensionMethod.Invoke(methodOptions, new[] { extensionField })!; }
-                catch (Exception ex) { _Logger.LogWarning(ex, "Failed to check for OpenAPI extension"); return false; }
-
-                if (!hasExtension) return false;
-
-                var getExtensionMethod = CachedGetExtensionForOpenapi;
-                if (getExtensionMethod == null) return false;
-
-                object? operation;
-                try { operation = getExtensionMethod.Invoke(methodOptions, new[] { extensionField }); }
-                catch (Exception ex) { _Logger.LogWarning(ex, "Failed to get OpenAPI operation extension"); return false; }
-
-                if (operation == null) return false;
-
-                // Note: GetProperty/GetMethod calls here are acceptable performance-wise
-                // as they're only executed during authentication checks, not on every request
-                PropertyInfo? securityProp;
-                try { securityProp = operation.GetType().GetProperty("Security"); }
-                catch (Exception ex) { _Logger.LogWarning(ex, "Failed to get Security property"); return false; }
-
-                if (securityProp == null) return false;
-
-                object? security;
-                try { security = securityProp.GetValue(operation); }
-                catch (Exception ex) { _Logger.LogWarning(ex, "Failed to get Security value"); return false; }
-
-                if (security == null) return false;
-
-                if (security is System.Collections.IEnumerable securityEnumerable)
-                {
-                    foreach (var secReq in securityEnumerable)
-                    {
-                        PropertyInfo? securityReqProp;
-                        try { securityReqProp = secReq.GetType().GetProperty("SecurityRequirement_"); }
-                        catch (Exception ex) { _Logger.LogWarning(ex, "Failed to get SecurityRequirement_ property"); continue; }
-
-                        if (securityReqProp == null) continue;
-
-                        object? securityReqDict;
-                        try { securityReqDict = securityReqProp.GetValue(secReq); }
-                        catch (Exception ex) { _Logger.LogWarning(ex, "Failed to get SecurityRequirement_ value"); continue; }
-
-                        if (securityReqDict == null) continue;
-
-                        MethodInfo? containsKeyMethod;
-                        try { containsKeyMethod = securityReqDict.GetType().GetMethod("ContainsKey"); }
-                        catch (Exception ex) { _Logger.LogWarning(ex, "Failed to get ContainsKey method"); continue; }
-
-                        if (containsKeyMethod != null)
-                        {
-                            bool containsBearer;
-                            try { containsBearer = (bool)containsKeyMethod.Invoke(securityReqDict, new object[] { "Bearer" })!; }
-                            catch (Exception ex) { _Logger.LogWarning(ex, "Failed to check for Bearer security"); continue; }
-
-                            if (containsBearer) return true;
-                        }
-                    }
-                }
-
-                return false;
-            }
-            catch (Exception ex)
-            {
-                _Logger.LogWarning(ex, "Error checking Bearer security");
-                return false;
-            }
-        }
-
-        private void ExtractPermissionExtensions(MethodOptions methodOptions, 
-            out string permission, out int action)
-        {
-            permission = "";
-            action = 0;
-
-            var resourceExtension = CachedPermissionResourceExtension;
-            if (resourceExtension != null)
-            {
-                var hasExtensionMethod = CachedHasExtensionForResource;
-                var getExtensionMethod = CachedGetExtensionForResource;
-
-                if (hasExtensionMethod != null && getExtensionMethod != null)
-                {
-                    try
-                    {
-                        var hasResource = (bool)hasExtensionMethod.Invoke(methodOptions, new[] { resourceExtension })!;
-                        if (hasResource)
-                        {
-                            var resourceValue = getExtensionMethod.Invoke(methodOptions, new[] { resourceExtension });
-                            permission = resourceValue?.ToString() ?? "";
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        _Logger.LogWarning(ex, "Failed to extract permission resource extension");
-                    }
-                }
-            }
-
-            var actionExtension = CachedPermissionActionExtension;
-            if (actionExtension != null)
-            {
-                var hasExtensionMethod = CachedHasExtensionForAction;
-                var getExtensionMethod = CachedGetExtensionForAction;
-
-                if (hasExtensionMethod != null && getExtensionMethod != null)
-                {
-                    try
-                    {
-                        var hasAction = (bool)hasExtensionMethod.Invoke(methodOptions, new[] { actionExtension })!;
-                        if (hasAction)
-                        {
-                            var actionValue = getExtensionMethod.Invoke(methodOptions, new[] { actionExtension });
-                            if (actionValue != null)
-                            {
-                                if (actionValue is Enum enumValue) action = Convert.ToInt32(enumValue);
-                                else if (int.TryParse(actionValue.ToString(), out int intValue))
-                                    action = intValue;
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        _Logger.LogWarning(ex, "Failed to extract permission action extension");
-                    }
-                }
-            }
-        }
-
         private void ValidateToken(string token, string permission, int action)
         {
             bool isValid;
@@ -537,7 +351,19 @@ namespace AccelByte.Extend.ServiceExtension.Server
             // Skip authentication for internal gRPC methods (health, reflection)
             if (IsInternalMethod(context.Method)) return;
 
-            MethodDescriptor? methodDesc = FindMethodDescriptor(context.Method);
+            string methodName = context.Method.Replace('/', '.').Substring(1);
+            MethodDescriptor? methodDesc = null;
+            foreach (var mdItem in Service.Descriptor.Methods)
+            {
+                if (mdItem.FullName == methodName)
+                {
+                    methodDesc = mdItem;
+                    break;
+                }
+            }
+
+            if (methodDesc == null)
+                throw new RpcException(new Status(StatusCode.NotFound, "Suitable method not found."));
 
             bool requiresToken = false;
             string permission = "";
@@ -547,8 +373,23 @@ namespace AccelByte.Extend.ServiceExtension.Server
             {
                 MethodOptions mOpts = methodDesc.GetOptions();
 
-                requiresToken = HasBearerSecurity(mOpts);
-                ExtractPermissionExtensions(mOpts, out permission, out action);
+                string qPermission = "";
+                if (mOpts.HasExtension(PermissionExtensions.Resource))
+                    qPermission = mOpts.GetExtension(PermissionExtensions.Resource);
+
+                Extend.ServiceExtension.Action qAction = 0;
+                if (mOpts.HasExtension(PermissionExtensions.Action))
+                    qAction = mOpts.GetExtension(PermissionExtensions.Action);
+
+                if (mOpts.HasExtension(AnnotationsExtensions.Openapiv2Operation))
+                {
+                    var openApiOps = mOpts.GetExtension(AnnotationsExtensions.Openapiv2Operation);
+                    if (openApiOps != null && openApiOps.Security.Count > 0)
+                    {
+                        SecurityRequirement secReq = openApiOps.Security[0];
+                        requiresToken = secReq.SecurityRequirement_.ContainsKey("Bearer");
+                    }
+                }
 
                 if (!requiresToken && string.IsNullOrEmpty(permission) && action == 0) return;
             }
