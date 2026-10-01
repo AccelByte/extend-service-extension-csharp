@@ -6,6 +6,7 @@ require (
 	github.com/go-openapi/loads v0.22.0
 	github.com/golang/glog v1.2.4
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.26.3
+	github.com/rs/cors v1.11.1
 	github.com/sirupsen/logrus v1.9.3
 	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.60.0
 	go.opentelemetry.io/contrib/propagators/b3 v1.35.0
