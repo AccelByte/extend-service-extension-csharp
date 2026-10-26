@@ -2,6 +2,10 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "packageRules": [
     {
+      "matchPackageNames": ["/^OpenTelemetry/"],
+      "groupName": "opentelemetry"
+    },
+    {
       "matchPackageNames": ["golang"],
       "allowedVersions": "<=1.24"
     },
